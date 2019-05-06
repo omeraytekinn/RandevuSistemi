@@ -5,12 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Randevu Sistemi{% if title %} - {{title}}{% endif %}</title>
 
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <!-- Custom styles for this template -->
-    <link href="{{ url_for('static', filename='styles/login.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{url_for('static', filename='styles/bootstrap.min.css')}}" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   </head>
-  <body class="text-center">
+  <body class='{{ body }}'>
+          {% include 'includes/navbar.html' %}
           {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
               {% for category, message in messages %}
@@ -20,7 +18,12 @@
               {% endfor %}
             {% endif %}
           {% endwith %}
-          {% block content %}{% endblock %}
+          <div class='content'>
+            {% block content %}{% endblock %}
+          </div>
 
+          <script src="{{url_for('static', filename='scripts/jquery-3.2.1.slim.min.js')}}"></script>
+          <script src="{{url_for('static', filename='scripts/popper.min.js')}}"></script>
+          <script src="{{url_for('static', filename='scripts/bootstrap.min.js')}}"></script>
 </body>
 </html>
