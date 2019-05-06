@@ -1,0 +1,37 @@
+{% extends 'layout.html' %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/login.css') }}" />
+
+<form class="form-signin" method="POST" action="">
+  {{ form.hidden_tag() }}
+  <h1 class="h3 mb-5 font-weight-small">Öğrenci Öğretim Üyesi Randevu Sistemi</h1>
+  <img class="mb-4" src="{{ url_for('static', filename='logo.png') }}" alt="ytu-logo" width="90" height="90">
+  <h1 class="h3 mb-10 font-weight-normal">Giriş Yapınız</h1>
+  {{ form.username.label(class="sr-only") }}
+  {{ form.username(class="form-control", placeholder="Kullanıcı Adı", required="", autofocus="") }}
+  {% if form.username.errors %}
+  <div class="alert alert-danger" role="alert">
+      {% for error in form.username.errors %}
+          <span>{{ error  }}</span>
+      {% endfor %}
+  </div>
+  {% endif %}
+
+  {{ form.password.label(class="sr-only") }}
+  {{ form.password(class="form-control", placeholder="Şifre", required="") }}
+  {% if form.password.errors %}
+  <div class="badge badge-secondary" role="alert">
+      {% for error in form.password.errors %}
+          <span>{{ error  }}</span>
+      {% endfor %}
+  </div>
+  {% endif %}
+
+  <div class="checkbox mb-3">
+      {{ form.remember() }}
+      {{ form.remember.label() }}
+  </div>
+  {{ form.submit(class="btn btn-lg btn-primary btn-block") }}
+  <p class="mt-5 mb-3 text-muted">&copy; 2019-2019</p>
+</form>
+{% endblock %}
