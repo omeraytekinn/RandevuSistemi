@@ -1,0 +1,42 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="row">
+  <div class="col-sm-9 col-md-7 col-lg-7 mx-auto text-center">
+    <div class="card card-signin my-5 profile-wrapper">
+      <div class="card-body">
+        <img class="mb-4" src="{{ url_for('static', filename='images/logo.png') }}" alt="ytu-logo" width="90" height="90">
+        <h5 class="col-12">Profil Bilgileri</h5>
+        <form class="form-horizontal col-12" method="post">
+          <div class="form-row">
+            <label class="col-3 col-form-label"for="ad">Ad:</label>
+            <input type="text" name="ad" class="form-control-plaintext col-9" value="Ömer" readonly>
+          </div>
+          <div class="form-row">
+            <label class="col-3 col-form-label"for="ad">Soyad:</label>
+            <input type="text" name="ad" class="form-control-plaintext col-9" value="Aytekin" readonly>
+          </div>
+          <div class="form-row">
+            <label class="col-3 col-form-label"for="ad">Email:</label>
+            <input type="text" name="ad" class="form-control-plaintext col-9" value="oniketya@gmail.com" readonly>
+          </div>
+          <div class="form-row">
+            <label class="col-3 col-form-label"for="ad">Telefon:</label>
+            <input type="text" name="ad" class="form-control-plaintext col-9" value="5426427163" readonly>
+          </div>
+          <div class="form-row">
+            <label class="col-3 col-form-label"for="ad">Adres:</label>
+            <textarea name="ad" class="form-control-plaintext col-9" style="resize: none" readonly>FSM Yurdu</textarea>
+          </div>
+
+          <button class="btn btn-md btn-success text-uppercase d-none" type="submit">Kaydet</button>
+          <button class="btn btn-md btn-danger text-uppercase d-none" type="submit">İptal</button>
+        </form>
+        <div class="col-5">
+          <button class="btn btn-md btn-primary text-uppercase" type="submit">Düzenle</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
