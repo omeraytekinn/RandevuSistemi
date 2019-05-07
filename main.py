@@ -46,6 +46,5 @@ def randevutalep():
         return render_template('randevutalep.html', navbar=stdnav)
 
 
-
 if __name__ == '__main__':
     app.run(debug=True)
