@@ -1,6 +1,15 @@
 body{
-  background-color: #eee !important;
+  background-color: #fefefe !important;
 }
 .profile-wrapper{
-  background-color: #d2d7ff;
+  background-color: #fafafa;
+}
+.bg-dark{
+  background-color: #458bd5 !important;
+}
+nav li a{
+  color: white !important;
+}
+nav li a.dropdown-item{
+  color: #000 !important;
 }

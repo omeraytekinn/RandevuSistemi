@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, url_for ,session
 from functools import wraps
-from form import LoginForm
+from form import LoginForm, OgrenciProfilForm
 import Classes
 
 app = Flask(__name__)
@@ -59,7 +59,12 @@ def login():
 @app.route('/profile')
 @login_required
 def profile():
-    return render_template('ogrenci.html', navbar=stdnav)
+    form = OgrenciProfilForm()
+    ### Burada auth ile kullanıcı tipi gönderiliyor
+    ### Burada auth, loginde yapılan giriş türüne göre
+    ### ogrenci, ogretmen, yonetici değerlerini alabilir
+    ### ona göre yaparsınız artık bunu
+    return render_template('profil.html', navbar=stdnav, form=form, auth='ogrenci')
 
 @app.route('/randevutalep')
 @login_required

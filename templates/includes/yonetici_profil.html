@@ -1,0 +1,22 @@
+<!-- Buraya yönetici ile ilgili formlar gelecek -->
+<div class="form-row">
+  {{ form.ad.label(class="col-3 col-form-label") }}
+  {{ form.ad(class="form-control-plaintext col-9", value="veritabanından gelecek", readonly="") }}
+</div>
+<div class="form-row">
+  {{ form.soyad.label(class="col-3 col-form-label") }}
+  {{ form.soyad(class="form-control-plaintext col-9", value="veritabanından gelecek", readonly="") }}
+</div>
+<div class="form-row">
+  {{ form.email.label(class="col-3 col-form-label") }}
+  {{ form.email(class="form-control-plaintext col-9", value="veritabanından gelecek", readonly="") }}
+</div>
+<div class="form-row">
+  {{ form.telefon.label(class="col-3 col-form-label") }}
+  {{ form.telefon(class="form-control-plaintext col-9", value="veritabanından gelecek", readonly="") }}
+</div>
+<div class="form-row">
+  {{ form.adres.label(class="col-3 col-form-label") }}
+  {% set f = form.adres.process_data("please type content") %}
+  {{ form.adres(class="form-control-plaintext col-9", readonly="", style="resize: none" ) }}
+</div>
