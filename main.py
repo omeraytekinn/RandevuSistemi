@@ -34,7 +34,7 @@ stdnav = [
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        return redirect(url_for('profile'), code=302)
+        return redirect(url_for('profile'))
     return render_template('login.html', form=form)
 
 @app.route('/profile')
