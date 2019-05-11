@@ -6,7 +6,6 @@ import Classes
 app = Flask(__name__)
 
 app.config['SECRET_KEY']  = "123456"
-app.secret_key = "123456"
 
 
 stdnav = [
