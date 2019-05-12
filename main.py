@@ -8,7 +8,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY']  = "123456"
 
 
-stdnav = [
+stdnavOfStudent = [
     {
         'value':'Profil',
         'link':'profile'
@@ -31,6 +31,18 @@ stdnav = [
     }
 ]
 
+stdnavOfTeacher = [
+    {
+        'value':'Profil',
+        'link':'profile'
+    },
+    {
+        'value':'Randevularım',
+        'link':'randevular',
+        'alt':True #dropdown link
+    }
+]
+
 
 def login_required(f):
     @wraps(f)
@@ -45,6 +57,8 @@ def login_required(f):
 
 @app.route('/', methods=['POST', 'GET'])
 def login():
+    if "logged_in" in session:#login islemi yapildi ise profil sayfasına yönlendir
+            return redirect(url_for("profile"))
     form = LoginForm()
     if form.validate_on_submit():
         username=form.username.data
@@ -53,6 +67,7 @@ def login():
         if real_password == password:
             session["logged_in"]=True
             session["username"]=username
+            session["id"]=Classes.GetId(username)
             flash('Giriş Başarılı!', 'success')
             return redirect(url_for('profile'), code=302)
         else:
@@ -63,28 +78,38 @@ def login():
 @login_required
 def profile():
     form = OgrenciProfilForm()
+    user=Classes.GetUser(session['id'])
+
+    if user.user_type == 'Student':
+        navbar=stdnavOfStudent
+    if user.user_type == 'Teacher':
+        navbar=stdnavOfTeacher
+
     if form.validate_on_submit():
         ad=form.ad.data
         soyad=form.soyad.data
-        email=Classes.GetPassword(username)
-        flash('Bİlgileriniz Kaydedildi!', 'success')
+        email=form.email.data
+        telefon=form.telefon.data
+        adres=form.adres.data
+        user=Classes.User(name=ad,surname=soyad,email=email,adres=adres,number=telefon)
+        Classes.UpdateUser(session['id'],user)
         return redirect(url_for('profile'))
     ### Burada auth ile kullanıcı tipi gönderiliyor
     ### Burada auth, loginde yapılan giriş türüne göre
     ### ogrenci, ogretmen, yonetici değerlerini alabilir
     ### ona göre yaparsınız artık bunu
-    return render_template('profil_layout.html', navbar=stdnav, form=form, auth='ogrenci')
-
-@app.route('/randevular')
-@login_required
-def randevular():
-        return render_template('randevular.html', navbar=stdnav)
-
+    return render_template('profil_layout.html', navbar=navbar, form=form, auth=user.user_type,user=user)
 
 @app.route('/randevutalep')
 @login_required
 def randevutalep():
-        return render_template('randevu_talep.html', navbar=stdnav)
+        return render_template('randevu_talep.html', navbar=stdnavOfStudent)
+
+
+@app.route('/randevular')
+@login_required
+def randevular():
+    return render_template('randevular.html', navbar=stdnavOfStudent)
 
 @app.route('/logout')
 def logout():

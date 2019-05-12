@@ -1,21 +1,21 @@
 <div class="form-row">
   {{ form.ad.label(class="col-4 col-form-label text-left") }}
-  {{ form.ad(class="form-control-plaintext col-6", value="veritabanından gelecek", readonly="") }}
+  {{ form.ad(class="form-control-plaintext col-6", value=user.name, readonly="") }}
 </div>
 <div class="form-row">
   {{ form.soyad.label(class="col-4 col-form-label text-left") }}
-  {{ form.soyad(class="form-control-plaintext col-6", value="veritabanından gelecek", readonly="") }}
+  {{ form.soyad(class="form-control-plaintext col-6", value=user.surname, readonly="") }}
 </div>
 <div class="form-row">
   {{ form.email.label(class="col-4 col-form-label text-left") }}
-  {{ form.email(class="form-control-plaintext col-6", value="veritabanından gelecek", readonly="") }}
+  {{ form.email(class="form-control-plaintext col-6", value=user.email, readonly="") }}
 </div>
 <div class="form-row">
   {{ form.telefon.label(class="col-4 col-form-label text-left") }}
-  {{ form.telefon(class="form-control-plaintext col-6", value="veritabanından gelecek", readonly="") }}
+  {{ form.telefon(class="form-control-plaintext col-6", value=user.number, readonly="") }}
 </div>
 <div class="form-row">
   {{ form.adres.label(class="col-4 col-form-label text-left") }}
-  {% set f = form.adres.process_data("please type content") %}
+  {% set f = form.adres.process_data(user.adres) %}
   {{ form.adres(class="form-control-plaintext col-6", readonly="", style="resize: none" ) }}
 </div>
