@@ -10,27 +10,27 @@ body{
   background-color: #234c78 !important;
 }
 
-.btn-primary{
+.my_btn-primary{
   background-color: #234c78 !important;
   border-color: #1a3e65 !important;
 }
 
-.btn-primary:hover{
+.my_btn-primary:hover{
   background-color: #1a3e65 !important;
   border-color: #1a3e65 !important;
 }
 
-nav a{
+.my_nav a{
   color: white !important;
   border-radius: 10px;
 }
 
-nav a.dropdown-item{
+.my_nav a.dropdown-item{
   color: #1a3e65 !important;
   border-radius: 0px;
 }
 
-nav a:hover{
+.my_nav a:hover{
   background-color: #1a3e65 !important;
   color: #fff !important;
 }
@@ -64,11 +64,46 @@ nav a:hover{
 }
 
 .modal-body p{
-  margin: 10px;
+  margin: 15px;
 }
 
 .modal-success{
   color: #155724;
   background-color: #d4edda;
   border-color: #c3e6cb;
+}
+
+.thead-light th{
+  background-color: #e3e3e3 !important;
+}
+
+.dataTables_wrapper{
+  top: 15px1;
+  padding: 20px 0px 15px 0px;
+}
+
+.dataTables_wrapper label{
+  margin: 10px;
+}
+
+.dataTables_length{
+  font-size: 15pt;
+}
+
+.btn-primary{
+  background-color: #234c78;
+  border-color: #173759;
+}
+
+.btn-primary:hover{
+  background-color: #173759;
+}
+
+.btn-success{
+  background-color: #09691f;
+  border-color: #054113;
+}
+
+.btn-success:hover{
+  background-color: #054113;
 }

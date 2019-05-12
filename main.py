@@ -25,7 +25,7 @@ stdnav = [
     },
     {
         'value':'Randevularım',
-        'link':'randvular',
+        'link':'randevular',
         'top':True,
         'end':True #dropdown last element
     }
@@ -67,17 +67,24 @@ def profile():
         ad=form.ad.data
         soyad=form.soyad.data
         email=Classes.GetPassword(username)
+        flash('Bİlgileriniz Kaydedildi!', 'success')
         return redirect(url_for('profile'))
     ### Burada auth ile kullanıcı tipi gönderiliyor
     ### Burada auth, loginde yapılan giriş türüne göre
     ### ogrenci, ogretmen, yonetici değerlerini alabilir
     ### ona göre yaparsınız artık bunu
-    return render_template('profil.html', navbar=stdnav, form=form, auth='ogrenci')
+    return render_template('profil_layout.html', navbar=stdnav, form=form, auth='ogrenci')
+
+@app.route('/randevular')
+@login_required
+def randevular():
+        return render_template('randevular.html', navbar=stdnav)
+
 
 @app.route('/randevutalep')
 @login_required
 def randevutalep():
-        return render_template('randevutalep.html', navbar=stdnav)
+        return render_template('randevu_talep.html', navbar=stdnav)
 
 @app.route('/logout')
 def logout():
