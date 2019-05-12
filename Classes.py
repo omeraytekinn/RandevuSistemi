@@ -76,7 +76,6 @@ class TalepRandevu(Randevu):
    __mapper_args__ ={'polymorphic_identity':"TalepRandevu"}
 
 
-#Base.metadata.create_all(engine)
 
 def OgrenciEkle(ad,soyad,kullanici,sifre,adres,email,number):
    Session = sessionmaker(bind=engine)
@@ -85,10 +84,10 @@ def OgrenciEkle(ad,soyad,kullanici,sifre,adres,email,number):
    session.add(stu)
    session.commit()
 
-def OgretmenEkle(ad,soyad,kullanici,sifre,adres,email):
+def OgretmenEkle(ad,soyad,kullanici,sifre,adres,email,number):
    Session = sessionmaker(bind=engine)
    session = Session()
-   tea=Teacher(username=kullanici,password=sifre,name=ad,surname=soyad,adres=adres,email=email)
+   tea=Teacher(username=kullanici,password=sifre,name=ad,surname=soyad,adres=adres,email=email,number=number)
    session.add(tea)
    session.commit()
 
@@ -102,9 +101,7 @@ def GetPassword(username):
 def DeleteUser(id):
    Session = sessionmaker(bind=engine)
    session = Session()
-   session.query(Student).filter(Student.id==id).delete()
-   session.query(Teacher).filter(Teacher.id==id).delete()
-   session.query(User).filter(User.id==id).delete()
+   usertype=session.query(User.user_type).filter(User.id==id).scalar()
    session.commit()
 
 def GetId(username):
@@ -114,7 +111,25 @@ def GetId(username):
    session.commit()
    return id
 
+def UpdateUser(id,user2):
+   Session = sessionmaker(bind=engine)
+   session = Session()
+   user=session.query(User).filter(User.id==id).scalar()
+   user.name=user2.name
+   user.surname=user2.surname
+   user.email=user2.email
+   user.number=user2.number
+   user.adres=user2.adres
+   session.commit()
 
+def GetUser(id):
+   Session = sessionmaker(bind=engine)
+   session = Session()
+   user=session.query(User).filter(User.id==id).scalar()
+   session.commit()
+   return user
+
+#OgretmenEkle('ziya','kaba','ziyas','asde3241','yeldiz sok.','ziya@gmail.com','533432123')
 
 #Base.metadata.create_all(engine)
 #OgrenciEkle('alperen','aksu','aaksu','1234','mefkure sok.','aksulperen@gmail.com','535532123')

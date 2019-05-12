@@ -15,7 +15,7 @@ $(document).ready(function () {
     $('form .form-row input, form textarea').addClass('form-control-plaintext');
     $('form .form-row input, form textarea').removeClass('form-control');
   });
-
+  
   $('#notifyModal').modal({show:true, backdrop: false});
   setTimeout(function() {
     $('#notifyModal').modal('hide');
