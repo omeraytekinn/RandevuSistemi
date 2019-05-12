@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for ,session
+from flask import Flask, render_template, redirect, url_for ,session, flash
 from functools import wraps
 from form import LoginForm, OgrenciProfilForm
 import Classes
@@ -53,13 +53,21 @@ def login():
         if real_password == password:
             session["logged_in"]=True
             session["username"]=username
+            flash('Giriş Başarılı!', 'success')
             return redirect(url_for('profile'), code=302)
+        else:
+            flash('Hatalı Bilgi Girişi!', 'error')
     return render_template('login.html', form=form)
 
-@app.route('/profile')
+@app.route('/profile', methods=['POST', 'GET'])
 @login_required
 def profile():
     form = OgrenciProfilForm()
+    if form.validate_on_submit():
+        ad=form.ad.data
+        soyad=form.soyad.data
+        email=Classes.GetPassword(username)
+        return redirect(url_for('profile'))
     ### Burada auth ile kullanıcı tipi gönderiliyor
     ### Burada auth, loginde yapılan giriş türüne göre
     ### ogrenci, ogretmen, yonetici değerlerini alabilir
@@ -74,6 +82,7 @@ def randevutalep():
 @app.route('/logout')
 def logout():
         session.clear()
+        flash('Çıkış Başarılı', 'success')
         return redirect('/')
 
 

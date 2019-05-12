@@ -5,6 +5,7 @@
     <title></title>
     <link rel="stylesheet" href="{{url_for('static', filename='styles/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='styles/style.css')}}">
+    <script type="text/javascript" src="{{url_for('static', filename='scripts/scripts.js')}}" defer></script>
   </head>
   <body>
   {% block body %}
@@ -12,6 +13,22 @@
       {% include 'includes/navbar.html' %}
     {% endif %}
     <div class="container">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+          <div id="notifyModal" class="modal hide" role="dialog">
+            <div class="modal-dialog">
+              <div class="modal-content modal-{{ category }}">
+                <div class="modal-body">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      <p>{{ message }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
       {% block content %}{% endblock %}
     </div>
   {% endblock %}
