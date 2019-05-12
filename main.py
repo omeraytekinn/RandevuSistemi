@@ -79,12 +79,12 @@ def login():
 def profile():
     form = OgrenciProfilForm()
     user=Classes.GetUser(session['id'])
-    
+
     if user.user_type == 'Student':
         navbar=stdnavOfStudent
     if user.user_type == 'Teacher':
         navbar=stdnavOfTeacher
-    
+
     if form.validate_on_submit():
         ad=form.ad.data
         soyad=form.soyad.data
@@ -98,12 +98,19 @@ def profile():
     ### Burada auth, loginde yapılan giriş türüne göre
     ### ogrenci, ogretmen, yonetici değerlerini alabilir
     ### ona göre yaparsınız artık bunu
-    return render_template('profil.html', navbar=navbar, form=form, auth=user.user_type,user=user)
+    return render_template('profil_layout.html', navbar=navbar, form=form, auth=user.user_type,user=user)
 
 @app.route('/randevutalep')
 @login_required
 def randevutalep():
-        return render_template('randevutalep.html', navbar=stdnavOfStudent)
+        teacher=Classes.GetTeachers()
+        return render_template('randevu_talep.html', navbar=stdnavOfStudent,teachers=teacher)
+
+
+@app.route('/randevular')
+@login_required
+def randevular():
+    return render_template('randevular.html', navbar=stdnavOfStudent)
 
 @app.route('/logout')
 def logout():
