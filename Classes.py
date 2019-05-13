@@ -2,6 +2,7 @@ from sqlalchemy import create_engine,Column, Integer, String ,ForeignKey,case,Da
 from sqlalchemy.orm import column_property, relationship,sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 import datetime
+from flask import jsonify
 
 engine = create_engine('sqlite:///Randevu.db',echo=True, connect_args={'check_same_thread':False})#interface of database
 Base = declarative_base()
@@ -19,7 +20,7 @@ class User(Base):
 
    __mapper_args__ = {'polymorphic_on':user_type,'polymorphic_identity':"User"}
    def __repr__(self):
-      return "<User(name='%s', fullname='%s', nickname='%s')>" % (self.name, self.name, self.username)
+      return self
 
 class Student(User):
    __tablename__ = 'student'

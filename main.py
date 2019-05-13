@@ -121,7 +121,13 @@ def logout():
 @app.route('/get/profile/<id>')
 def show_profile(id):
     teacher=Classes.GetTeacher(id)
-    return jsonify(teacher)
+    _teacher = {
+        'name': teacher.name,
+        'surname': teacher.surname,
+        'email': teacher.email
+        ## devamı da buraya
+    }
+    return jsonify(_teacher)
 
 
 if __name__ == '__main__':

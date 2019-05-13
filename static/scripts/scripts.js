@@ -76,7 +76,9 @@ $(document).ready(function () {
       $.ajax({
         url: 'get/profile/'+profilid,
         success: function(data) {
-            $('#profile-modal .modal-icerik').html(data.name);
+          $('#profile-modal .modal-icerik').eq(0).html(data.name);
+          $('#profile-modal .modal-icerik').eq(1).html(data.surname);
+          $('#profile-modal .modal-icerik').eq(2).html(data.email);
         }
       });
     });
