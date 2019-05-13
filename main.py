@@ -120,13 +120,8 @@ def logout():
 
 @app.route('/get/profile/<id>')
 def show_profile(id):
-    user=Classes.GetUser(session['id'])
-    if user.user_type == 'Student':
-        return user
-    if user.user_type == 'Teacher':
-        return "asdasd"
-    else:
-        return "ewrwer"
+    teacher=Classes.GetTeacher(id)
+    return jsonify(teacher)
 
 
 if __name__ == '__main__':

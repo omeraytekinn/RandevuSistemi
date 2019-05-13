@@ -129,6 +129,13 @@ def GetUser(id):
    session.commit()
    return user
 
+def GetTeacher(id):
+  Session = sessionmaker(bind=engine)
+  session = Session()
+  teacher=session.query(Teacher).filter(Teacher.id==id).scalar()
+  session.commit()
+  return teacher
+
 def GetTeachers():
    Session = sessionmaker(bind=engine)
    session = Session()
@@ -139,7 +146,7 @@ def GetTeachers():
 #OgretmenEkle('ziya','kaba','ziyas','asde3241','yeldiz sok.','ziya@gmail.com','533432123')
 
 #Base.metadata.create_all(engine)
-#OgrenciEkle('alperen','aksu','aaksu','1234','mefkure sok.','aksulperen@gmail.com','535532123')
+#OgretmenEkle('alperen','aksu','aaksu','1234','mefkure sok.','aksulperen@gmail.com','535532123')
 #Session = sessionmaker(bind=engine)
 #session = Session()
 #session.query(Student).filter(Student.Stu_name=='alperen').delete()
