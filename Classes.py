@@ -19,7 +19,7 @@ class User(Base):
 
    __mapper_args__ = {'polymorphic_on':user_type,'polymorphic_identity':"User"}
    def __repr__(self):
-      return "<User(name='%s', fullname='%s', nickname='%s')>" % (self.name, self.fullname, self.nickname)
+      return "<User(name='%s', fullname='%s', nickname='%s')>" % (self.name, self.name, self.username)
 
 class Student(User):
    __tablename__ = 'student'

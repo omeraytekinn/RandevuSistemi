@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for ,session, flash
+from flask import Flask, render_template, redirect, url_for ,session, flash, request, jsonify
 from functools import wraps
 from form import LoginForm, OgrenciProfilForm
 import Classes
@@ -109,7 +109,7 @@ def randevutalep():
 @app.route('/randevular')
 @login_required
 def randevular():
-    return render_template('randevular.html', navbar=stdnavOfStudent)
+    return render_template('randevular_layout.html', navbar=stdnavOfStudent)
 
 @app.route('/logout')
 def logout():
@@ -117,6 +117,15 @@ def logout():
         flash('Çıkış Başarılı', 'success')
         return redirect('/')
 
+@app.route('/get/profile/<id>')
+def show_profile(id):
+    user=Classes.GetUser(session['id'])
+    if user.user_type == 'Student':
+        return user
+    if user.user_type == 'Teacher':
+        return "asdasd"
+    else:
+        return "ewrwer"
 
 
 if __name__ == '__main__':
