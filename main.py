@@ -103,7 +103,8 @@ def profile():
 @app.route('/randevutalep')
 @login_required
 def randevutalep():
-        return render_template('randevu_talep.html', navbar=stdnavOfStudent)
+        teacher=Classes.GetTeachers()
+        return render_template('randevu_talep.html', navbar=stdnavOfStudent,teachers=teacher)
 
 
 @app.route('/randevular')
