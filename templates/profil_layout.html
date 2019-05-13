@@ -11,9 +11,9 @@
           <div class="row">
             <div class="col-10 offset-1">
                 {{ form.hidden_tag() }}
-                {% if auth == 'ogrenci' %}
+                {% if auth == 'Student' %}
                 {% include 'includes/ogrenci_profil.html' %}
-                {% elif auth == 'ogretmen' %}
+                {% elif auth == 'Teacher' %}
                   {% include 'includes/ogretmen_profil.html' %}
                 {% elif auth == 'yonetici' %}
                   {% include 'includes/yonetici_profil.html' %}

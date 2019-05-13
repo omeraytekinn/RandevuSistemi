@@ -3,7 +3,7 @@ from sqlalchemy.orm import column_property, relationship,sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 import datetime
 
-engine = create_engine('sqlite:///Randevu.db',echo=True)#interface of database
+engine = create_engine('sqlite:///Randevu.db',echo=True, connect_args={'check_same_thread':False})#interface of database
 Base = declarative_base()
 class User(Base):
    __tablename__ = 'user'
@@ -128,6 +128,13 @@ def GetUser(id):
    user=session.query(User).filter(User.id==id).scalar()
    session.commit()
    return user
+
+def GetTeachers():
+   Session = sessionmaker(bind=engine)
+   session = Session()
+   teachers=session.query(Teacher).all()
+   session.commit()
+   return teachers
 
 #OgretmenEkle('ziya','kaba','ziyas','asde3241','yeldiz sok.','ziya@gmail.com','533432123')
 
