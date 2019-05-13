@@ -137,7 +137,7 @@ def GetTeachers():
    return teachers
 
 #OgretmenEkle('ziya','kaba','ziyas','asde3241','yeldiz sok.','ziya@gmail.com','533432123')
-   
+
 #Base.metadata.create_all(engine)
 #OgrenciEkle('alperen','aksu','aaksu','1234','mefkure sok.','aksulperen@gmail.com','535532123')
 #Session = sessionmaker(bind=engine)
