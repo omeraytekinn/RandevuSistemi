@@ -38,8 +38,26 @@ stdnavOfTeacher = [
     },
     {
         'value':'Randevularım',
-        'link':'randevular',
-        'alt':True #dropdown link
+        'link':'randevular'
+    }
+]
+
+stdnavOfYonetici = [
+    {
+        'value':'Profil',
+        'link':'profile'
+    },
+    {
+        'value':'Randevularım',
+        'link':'randevular'
+    },
+    {
+        'value':'Öğrenci Ekle',
+        'link':'ogrenciekle'
+    },
+    {
+        'value':'Öğretim Üyesi Ekle',
+        'link':'ogretmenekle'
     }
 ]
 
@@ -50,6 +68,7 @@ def login_required(f):
         if "logged_in" in session:
             return f(*args, **kwargs)
         else:
+            flash("Giriş Yapmanız Gerekiyor!", "error")
             return redirect("/")
     return decorated_function
 
@@ -106,7 +125,6 @@ def randevutalep():
         teacher=Classes.GetTeachers()
         return render_template('randevu_talep.html', navbar=stdnavOfStudent,teachers=teacher)
 
-
 @app.route('/randevular')
 @login_required
 def randevular():
@@ -129,6 +147,13 @@ def show_profile(id):
     }
     return jsonify(_teacher)
 
+@app.route('/ogrenciekle')
+def ogrenciekle():
+    return render_template('ogrenci_ekle.html', navbar=stdnavOfStudent)
+
+@app.route('/ogretmenekle')
+def ogretmenekle():
+    return render_template('ogretmen_ekle.html', navbar=stdnavOfStudent)
 
 if __name__ == '__main__':
     app.run(debug=True)

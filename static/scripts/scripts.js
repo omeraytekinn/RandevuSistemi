@@ -26,7 +26,7 @@ $(document).ready(function () {
 
 
     $('#dtBasicExample').DataTable( {
-          "infoEmpty": "No entries to show",
+          "order": [[ 3, "asc" ]],
           language: {
             "decimal":        "",
             "emptyTable":     "Veri bulunamadı!",
@@ -70,17 +70,57 @@ $(document).ready(function () {
         ]
     });
 
-    var profilid;
-    $(".profil-btn").click(function(){
-      profilid = $(this).attr("name");
+    var profilID;
+    $(".profile-btn").click(function(){
+      profilID = $(this).attr("name");
       $.ajax({
-        url: 'get/profile/'+profilid,
+        url: 'get/profile/'+profilID,
         success: function(data) {
           $('#profile-modal .modal-icerik').eq(0).html(data.name);
           $('#profile-modal .modal-icerik').eq(1).html(data.surname);
           $('#profile-modal .modal-icerik').eq(2).html(data.email);
         }
       });
+    });
+/*
+    var weekTable = $('<table>').addClass('week-table');
+    var gunler = ['Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma']
+    var row = $('<tr>').addClass('days').addClass('row');
+    var col = $('<td>').addClass('col-2').text('Tarih:');
+    row.append(col);
+    for(i=0; i<5; i++){
+      var col = $('<td>').text(gunler[i]).addClass('col-2');
+      row.append(col);
+      weekTable.append(row);
+    }
+    for(i=0; i<8; i++){
+      var row = $('<tr>').addClass('row');
+      var col = $('<td>').text((i+9)+':00').addClass('col-2');
+      row.append(col);
+      for(j=0; j<5; j++){
+        var col = $('<td>').attr({row:i, col:j}).addClass('col-2');
+        var check = $('<input>').attr({
+                      type: 'radio',
+                      name: 'date',
+                      value: i+'-'+j
+                    });
+        col.append(check);
+        row.append(col);
+      }
+      weekTable.append(row);
+    }
+    $('#here_table').append(weekTable);
+
+*/
+    var date = new Date();
+    $('#sandbox-container input').datepicker({
+        weekStart: 1,
+        maxViewMode: 0,
+        todayBtn: true,
+        keyboardNavigation: false,
+        forceParse: false,
+        daysOfWeekDisabled: "0,6",
+        defaultViewDate: { year: date.getFullYear(), month: date.getMonth()+1, day: date.getDate() }
     });
 
 });
