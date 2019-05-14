@@ -126,7 +126,13 @@ def profile():
 @app.route('/randevutalep', methods=['POST', 'GET'])
 @login_required
 def randevutalep():
-        form=request.form
+        form = request.form
+        if form:
+            hour = form.get('hour')
+            minute = form.get('minute')
+            date = form.get('date')
+            id = form.get('id')
+            flash('Randevu Başarıyla Kaydedildi!', 'success')
         teacher=Classes.GetTeachers()
         return render_template('randevu_talep.html', navbar=stdnavOfStudent,teachers=teacher)
 
@@ -152,12 +158,12 @@ def show_profile(id):
         'surname': teacher.surname,
         'email': teacher.email,
         'tel' : teacher.number,
-        'arastirma':teacher.arastirma,
-        'schedule':teacher.takvim,
-        'notes':teacher.note
+        'research': teacher.arastirma,
+        'schedule': teacher.takvim,
+        'notes': teacher.note
     }
     return jsonify(_teacher)
-    
+
 @app.route('/ogretmenekle')
 def ogretmenekle():
     return render_template('ogretmen_ekle.html', navbar=stdnavOfStudent)
