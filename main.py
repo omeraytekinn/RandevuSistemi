@@ -87,6 +87,23 @@ def login_requiredOfAdmin(f):
             return redirect("/")
     return decorated_function
 
+def login_requiredOfStudent(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if "Studentmode" in session:
+            return f(*args, **kwargs)
+        else:
+            return redirect("/")
+    return decorated_function
+
+def login_requiredOfTeacher(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if "Teachermode" in session:
+            return f(*args, **kwargs)
+        else:
+            return redirect("/")
+    return decorated_function
 
 @app.route('/', methods=['POST', 'GET'])
 def login():
@@ -116,11 +133,14 @@ def login():
 def profile():
     user=Classes.GetUser(session['id'])
 
+
     if user.user_type == 'Student':
         session["navbar"]=stdnavOfStudent
+        session["Studentmode"]=True
         form = OgrenciProfilForm()
     if user.user_type == 'Teacher':
         session["navbar"]=stdnavOfTeacher
+        session["Teachermode"]=True
         user=Classes.GetTeacher(session['id'])
         form = OgretmenProfilForm()
 
@@ -146,7 +166,7 @@ def profile():
     return render_template('profil_layout.html', navbar=session["navbar"], form=form, auth=user.user_type,user=user)
 
 @app.route('/randevutalep', methods=['POST', 'GET'])
-@login_required
+@login_requiredOfStudent
 def randevutalep():
         form = request.form
         if form:
@@ -167,6 +187,7 @@ def randevutalep():
 @app.route('/randevular')
 @login_required
 def randevular():
+    Classes.CheckDateTime()#Onaylanmıs randevuların saatini şimdiki zaman ile karsılastırarak statu degistirir.
     user=Classes.GetUser(session["id"])
     gecmisrandevular=Classes.GetGecmisRandevu(session["id"],user.user_type)
     gelecekrandevular=Classes.GetGelecekRandevu(session["id"],user.user_type)
