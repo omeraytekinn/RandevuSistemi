@@ -30,6 +30,9 @@ class Student(User):
 class Teacher(User):
    __tablename__ = 'teacher'
    Tea_id = Column(Integer,ForeignKey('user.id',ondelete='CASCADE'),primary_key=True)
+   note=Column(String(50))
+   arastirma=Column(String(50))
+   takvim=Column(String(50))
    __mapper_args__={'polymorphic_identity':'Teacher'}
 
 
@@ -145,6 +148,7 @@ def GetUser(id):
    Session = sessionmaker(bind=engine)
    session = Session()
    user=session.query(User).filter(User.id==id).scalar()
+   session.expunge_all()
    session.commit()
    return user
 
@@ -152,6 +156,7 @@ def GetTeacher(id):
   Session = sessionmaker(bind=engine)
   session = Session()
   teacher=session.query(Teacher).filter(Teacher.Tea_id==id).scalar()
+  session.expunge_all()
   session.commit()
   return teacher
 
@@ -159,6 +164,7 @@ def GetTeachers():
    Session = sessionmaker(bind=engine)
    session = Session()
    teachers=session.query(Teacher).all()
+   session.expunge_all()
    session.commit()
    return teachers
 
@@ -225,6 +231,14 @@ def RandevuBitir(id,RandevuNotu):
    Session = sessionmaker(bind=engine)
    session = Session()
    session.add(GecRandevu)
+   session.commit()
+
+
+def TalepOlustur(konu,teacher_id,student_id,teacherName,studentName,time):
+   Session=sessionmaker(bind=engine)
+   session=Session()
+   randevu=TalepRandevu(Topic=konu,teacher_id=teacher_id,student_id=student_id,teacherName=teacherName,studentName=studentName,Randevu_date=time)
+   session.add(randevu)
    session.commit()
 
 
