@@ -12,6 +12,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY']  = "123456"
 
 
+
 stdnavOfStudent = [
     {
         'value':'Profil',
@@ -77,6 +78,14 @@ def login_required(f):
             return redirect("/")
     return decorated_function
 
+def login_requiredOfAdmin(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if "adminmode" in session:
+            return f(*args, **kwargs)
+        else:
+            return redirect("/")
+    return decorated_function
 
 
 @app.route('/', methods=['POST', 'GET'])
@@ -88,6 +97,10 @@ def login():
         username=form.username.data
         password=form.password.data
         real_password=Classes.GetPassword(username)
+        if(username=="admin" and password=="1234"):
+            session["adminmode"]=True
+            session["navbar"]=stdnavOfYonetici
+            return redirect(url_for('ogrenciekle'))
         if real_password == password:
             session["logged_in"]=True
             session["username"]=username
@@ -104,10 +117,10 @@ def profile():
     user=Classes.GetUser(session['id'])
 
     if user.user_type == 'Student':
-        navbar=stdnavOfStudent
+        session["navbar"]=stdnavOfStudent
         form = OgrenciProfilForm()
     if user.user_type == 'Teacher':
-        navbar=stdnavOfTeacher
+        session["navbar"]=stdnavOfTeacher
         user=Classes.GetTeacher(session['id'])
         form = OgretmenProfilForm()
 
@@ -130,7 +143,7 @@ def profile():
     ### Burada auth ile kullanıcı tipi gönderiliyor
     ### Burada auth, loginde yapılan giriş türüne göre
     ### ogrenci, ogretmen, yonetici değerlerini alabilir
-    return render_template('profil_layout.html', navbar=navbar, form=form, auth=user.user_type,user=user)
+    return render_template('profil_layout.html', navbar=session["navbar"], form=form, auth=user.user_type,user=user)
 
 @app.route('/randevutalep', methods=['POST', 'GET'])
 @login_required
@@ -149,7 +162,7 @@ def randevutalep():
             Classes.TalepOlustur(konu,teacher_id,session["id"],teacher.name,ogrenci.name,dateformat)
             flash('Randevu Başarıyla Kaydedildi!', 'success')
         teacher=Classes.GetTeachers()
-        return render_template('randevu_talep.html', navbar=stdnavOfStudent,teachers=teacher)
+        return render_template('randevu_talep.html', navbar=session["navbar"],teachers=teacher)
 
 @app.route('/randevular')
 @login_required
@@ -158,10 +171,11 @@ def randevular():
     if form:
         Classes.RandevuBitir(form.get('id'),'İptal - '+form.get('reason'))
         flash('Randevu İptal Edildi!','error');
-    gecmisrandevular=Classes.GetGecmisRandevu(session["id"])
-    gelecekrandevular=Classes.GetGelecekRandevu(session["id"])
-    taleprandevular=Classes.GetTalepRandevu(session["id"])
-    return render_template('randevular_layout.html', navbar=stdnavOfStudent,PastRandevu=gecmisrandevular,GelecekRandevu=gelecekrandevular,TalepRandevu=taleprandevular)
+    user=Classes.GetUser(session["id"])
+    gecmisrandevular=Classes.GetGecmisRandevu(session["id"],user.user_type)
+    gelecekrandevular=Classes.GetGelecekRandevu(session["id"],user.user_type)
+    taleprandevular=Classes.GetTalepRandevu(session["id"],user.user_type)
+    return render_template('randevular_layout.html', navbar=session["navbar"],PastRandevu=gecmisrandevular,GelecekRandevu=gelecekrandevular,TalepRandevu=taleprandevular,user=user)
 
 @app.route('/logout')
 def logout():
@@ -183,13 +197,35 @@ def show_profile(id):
     }
     return jsonify(_teacher)
 
-@app.route('/ogretmenekle')
+@app.route('/ogretmenekle', methods=['GET','POST'])
+@login_requiredOfAdmin
 def ogretmenekle():
-    return render_template('ogretmen_ekle.html', navbar=stdnavOfStudent)
+    form=request.form
+    if form:
+        username=form.get('username')
+        password=form.get('pass')
+        name=form.get('name')
+        surname=form.get('surname')
+        email=form.get('email')
+        tel=form.get('tel')
+        adres=form.get('adres')
+        Classes.OgretmenEkle(ad=name,soyad=surname,kullanici=username,sifre=password,adres=adres,email=email,number=tel,note="")
+    return render_template('ogretmen_ekle.html', navbar=session["navbar"])
 
-@app.route('/ogrenciekle')
+@app.route('/ogrenciekle', methods=['GET','POST'])
+@login_requiredOfAdmin
 def ogrenciekle():
-    return render_template('ogrenci_ekle.html', navbar=stdnavOfStudent)
+    form=request.form
+    if form:
+        username=form.get('username')
+        password=form.get('pass')
+        name=form.get('name')
+        surname=form.get('surname')
+        email=form.get('email')
+        tel=form.get('tel')
+        adres=form.get('adres')
+        Classes.OgrenciEkle(ad=name,soyad=surname,kullanici=username,sifre=password,adres=adres,email=email,number=tel)
+    return render_template('ogrenci_ekle.html', navbar=session["navbar"])
 
 @app.route('/randevu/sil/<id>')
 def randevusil(id):

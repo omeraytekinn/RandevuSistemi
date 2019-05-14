@@ -183,27 +183,36 @@ def GetTeachers():
    return teachers
 
 
-def GetGecmisRandevu(id):
+def GetGecmisRandevu(id,type):
    Session = sessionmaker(bind=engine)
    session = Session()
-   randevus=session.query(GecmisRandevu).filter(GecmisRandevu.student_id==id).all()
+   if type == 'Teacher':
+      randevus=session.query(GecmisRandevu).filter(GecmisRandevu.teacher_id==id).all()
+   else:
+      randevus=session.query(GecmisRandevu).filter(GecmisRandevu.student_id==id).all()
    session.expunge_all()
    session.commit()
    return randevus
 
 
-def GetGelecekRandevu(id):
+def GetGelecekRandevu(id,type):
    Session = sessionmaker(bind=engine)
    session = Session()
-   randevus=session.query(GelecekRandevu).filter(GelecekRandevu.student_id==id).all()
+   if type == 'Teacher':
+      randevus=session.query(GelecekRandevu).filter(GelecekRandevu.teacher_id==id).all()
+   else:
+      randevus=session.query(GelecekRandevu).filter(GelecekRandevu.student_id==id).all()
    session.expunge_all()
    session.commit()
    return randevus
 
-def GetTalepRandevu(id):
+def GetTalepRandevu(id,type):
    Session = sessionmaker(bind=engine)
    session = Session()
-   randevus=session.query(TalepRandevu).filter(TalepRandevu.student_id==id).all()
+   if type == 'Teacher':
+      randevus=session.query(TalepRandevu).filter(TalepRandevu.teacher_id==id).all()
+   else:
+      randevus=session.query(TalepRandevu).filter(TalepRandevu.student_id==id).all()
    session.expunge_all()
    session.commit()
    return randevus
