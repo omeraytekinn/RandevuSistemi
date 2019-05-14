@@ -102,7 +102,7 @@ def DeleteUser(id):
       session.delete(user)
    session.commit()
 
-   
+
 def DeleteRandevu(id):
    Session = sessionmaker(bind=engine)
    session = Session()
@@ -196,9 +196,9 @@ def CheckDateTime():
    currenttime=datetime.datetime(x.year,x.month,x.day,x.hour,x.minute,x.second)
    for randevu in randevus:
       if randevu.Randevu_date < currenttime:
-         randevu.IsItPast=True 
+         randevu.IsItPast=True
    session.commit()
-   
+
 
 
 def RandevuOnay(id):
@@ -226,7 +226,7 @@ def RandevuBitir(id,RandevuNotu):
    session = Session()
    session.add(GecRandevu)
    session.commit()
-   
+
 
 #RandevuBitir(1,"asdasda")
 #DeleteUser(3)
@@ -235,16 +235,12 @@ def RandevuBitir(id,RandevuNotu):
 #OgretmenEkle('ziya','kaba','ziyas','asde3241','yeldiz sok.','ziya@gmail.com','533432123')
 
 #Base.metadata.create_all(engine)
-<<<<<<< HEAD
-#OgretmenEkle('alperen','aksu','aaksu','1234','mefkure sok.','aksulperen@gmail.com','535532123')
-=======
 #OgrenciEkle('alperen','aksu','alperen','1234','mefkure sok.','aksulperen@gmail.com','535532123')
 #OgrenciEkle('ömer','aytekin','ömer','1234','mefkure sok.','aksulperen@gmail.com','535532123')
 #OgrenciEkle('ufuk','yılmaz','ufuk','1234','mefkure sok.','aksulperen@gmail.com','535532123')
 #OgretmenEkle('cihan','taysi','cihan','1234','mefkure sok.','aksulperen@gmail.com','535532123')
 #OgretmenEkle('amac','güven','amac','1234','mefkure sok.','aksulperen@gmail.com','535532123')
 #OgretmenEkle('göksel','biricil','göksel','1234','mefkure sok.','aksulperen@gmail.com','535532123')
->>>>>>> b68dbc23035c1b9b50ac1b5ee97d53e6944262b8
 #Session = sessionmaker(bind=engine)
 #session = Session()
 #session.query(Student).filter(Student.Stu_name=='alperen').delete()
