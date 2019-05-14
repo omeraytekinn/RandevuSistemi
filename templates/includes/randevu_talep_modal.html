@@ -15,10 +15,14 @@
           </div>
           <div class="modal-icerik col-9"></div>
           <div class="col-3">
+            Takvim:
+          </div>
+          <div class="modal-icerik col-9"></div>
+          <div class="col-3">
             Tarih:
           </div>
           <div id='date-picker' class="col-9">
-            <input type="text" name="date">
+            <input type="text" name="date" readonly>
           </div>
           <div class="col-3">
             Saat:
@@ -29,6 +33,7 @@
           </div>
         </div>
         <div class="modal-footer">
+          <input type="hidden" name="id" id="teacher-id">
           <input type="submit" class="btn btn-primary randevual-form-btn" value="Randevu Al">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
         </div>

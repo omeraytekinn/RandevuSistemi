@@ -78,8 +78,11 @@ $(document).ready(function () {
         success: function(data) {
           $('#profile-modal .modal-icerik').eq(0).html(data.name);
           $('#profile-modal .modal-icerik').eq(1).html(data.surname);
-          $('#profile-modal .modal-icerik').eq(2).html(data.tel);
-          $('#profile-modal .modal-icerik').eq(3).html(data.email);
+          $('#profile-modal .modal-icerik').eq(2).html(data.research);
+          $('#profile-modal .modal-icerik').eq(3).html(data.schedule);
+          $('#profile-modal .modal-icerik').eq(4).html(data.notes);
+          $('#profile-modal .modal-icerik').eq(5).html(data.tel);
+          $('#profile-modal .modal-icerik').eq(6).html(data.email);
           $('#profile-modal .randevual-btn').attr('name',profilID);
         }
       });
@@ -92,6 +95,9 @@ $(document).ready(function () {
         success: function(data) {
           $('#randevual-modal .modal-icerik').eq(0).html(data.name);
           $('#randevual-modal .modal-icerik').eq(1).html(data.surname);
+          $('#randevual-modal .modal-icerik').eq(2).html(data.schedule);
+          $('#teacher-id').attr('value',profilID);
+
         }
       });
     });
