@@ -26,7 +26,7 @@ $(document).ready(function () {
 
 
     $('#dtBasicExample').DataTable( {
-          "infoEmpty": "No entries to show",
+          "order": [[ 3, "asc" ]],
           language: {
             "decimal":        "",
             "emptyTable":     "Veri bulunamadı!",
@@ -83,5 +83,21 @@ $(document).ready(function () {
         }
       });
     });
+
+    $('#date-picker').datepicker({
+      format: 'mm-dd-yyyy',
+      weekStart: 1,
+      setviewport: { month: 11, year: 2015 }
+    }).on('dateChanged.bs.datepicker', function(ev){
+      $('#date-picker').datepicker('hide');
+    });
+
+    var hours = $('<select>').attr('name','hour');
+    for(i=0; i<8; i++){
+      var hour = $('<option>').attr('value',(i+9)+':00').text((i+9)+':00');
+      hours.append(hour);
+    }
+    $('#hour-select').append(hours);
+
 
 });

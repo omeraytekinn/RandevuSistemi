@@ -1,0 +1,59 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+
+<div class="row">
+  <div class="col-9 mx-auto text-center">
+    <div class="card card-signin my-5 profile-wrapper">
+      <div class="card-body">
+        <h1 class="col-6 offset-3 ">Yeni Öğretim Üyesi</h1>
+        <hr>
+        <form class="form-horizontal col-12 profil-form" method="post">
+          <div class="row">
+            <div class="col-10 offset-1">
+              <legend>Kullanıcı Bilgileri</legend>
+              <div class="form-row">
+                <label for="username" class="col-3 col-form-label text-left">Okul Numarası: </label>
+                <input type="text" class="form-control col-9" name="username" id="username" placeholder="Öğrencinin okul nosunu giriniz...">
+              </div>
+              <div class="form-row">
+                <label for="pass" class="col-3 col-form-label text-left">Şifre: </label>
+                <input type="password" class="form-control col-9" name="pass" id="pass" placeholder="Öğrencinin şifresini giriniz...">
+              </div>
+              <hr>
+              <legend>Kişisel Bilgiler</legend>
+              <div class="form-row">
+                <label for="name" class="col-3 col-form-label text-left">Ad: </label>
+                <input type="text" class="form-control col-9" name="name" id="name" placeholder="Öğrencinin adını giriniz...">
+              </div>
+              <div class="form-row">
+                <label for="surname" class="col-3 col-form-label text-left">Soyad: </label>
+                <input type="text" class="form-control col-9" name="surname" id="surname" placeholder="Öğrencinin soyadını giriniz...">
+              </div>
+              <div class="form-row">
+                <label for="email" class="col-3 col-form-label text-left">E-posta adresi: </label>
+                <input type="text" class="form-control col-9" name="email" id="email" placeholder="Öğrencinin e-postasını giriniz...">
+              </div>
+              <div class="form-row">
+                <label for="tel" class="col-3 col-form-label text-left">Telefon Numarası: </label>
+                <input type="text" class="form-control col-9" name="tel" id="tel" placeholder="Öğrencinin telefonunu giriniz...">
+              </div>
+              <div class="form-row">
+                <label for="adres" class="col-3 col-form-label text-left">Adres: </label>
+                <textarea name="adres" id="adres" class="form-control col-9" placeholder="Öğrencinin adresini giriniz..." rows="4" style="resize: none"></textarea>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <div class="form-btn-wrap">
+            <button class="btn btn-md btn-success text-uppercase" type="submit">Kaydet</button>
+            <input type="button"class="btn btn-md btn-danger text-uppercase" value="İptal" />
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

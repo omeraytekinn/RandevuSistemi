@@ -107,3 +107,8 @@ body{
 .btn-success:hover{
   background-color: #054113;
 }
+
+.dropdown-menu{
+  z-index: 3000 !important;
+  margin-top: 0;
+}

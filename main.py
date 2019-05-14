@@ -1,10 +1,8 @@
 from flask import Flask, render_template, redirect, url_for ,session, flash, request, jsonify
 from functools import wraps
 from form import LoginForm, OgrenciProfilForm
-import Classes
 import datetime
-from enum import Enum
-
+import Classes
 
 
 app = Flask(__name__)
@@ -42,8 +40,26 @@ stdnavOfTeacher = [
     },
     {
         'value':'Randevularım',
-        'link':'randevular',
-        'alt':True #dropdown link
+        'link':'randevular'
+    }
+]
+
+stdnavOfYonetici = [
+    {
+        'value':'Profil',
+        'link':'profile'
+    },
+    {
+        'value':'Randevularım',
+        'link':'randevular'
+    },
+    {
+        'value':'Öğrenci Ekle',
+        'link':'ogrenciekle'
+    },
+    {
+        'value':'Öğretim Üyesi Ekle',
+        'link':'ogretmenekle'
     }
 ]
 
@@ -55,6 +71,7 @@ def login_required(f):
         if "logged_in" in session:
             return f(*args, **kwargs)
         else:
+            flash("Giriş Yapmanız Gerekiyor!", "error")
             return redirect("/")
     return decorated_function
 
@@ -115,6 +132,7 @@ def randevutalep():
 @app.route('/randevular')
 @login_required
 def randevular():
+    Classes.CheckDateTime()
     gecmisrandevular=Classes.GetGecmisRandevu(session["id"])
     gelecekrandevular=Classes.GetGelecekRandevu(session["id"])
     taleprandevular=Classes.GetTalepRandevu(session["id"])
@@ -137,6 +155,9 @@ def show_profile(id):
     }
     return jsonify(_teacher)
 
+@app.route('/ogretmenekle')
+def ogretmenekle():
+    return render_template('ogretmen_ekle.html', navbar=stdnavOfStudent)
 
 if __name__ == '__main__':
     app.run(debug=True)
