@@ -80,10 +80,10 @@ def OgrenciEkle(ad,soyad,kullanici,sifre,adres,email,number):
    session.add(stu)
    session.commit()
 
-def OgretmenEkle(ad,soyad,kullanici,sifre,adres,email,number):
+def OgretmenEkle(ad,soyad,kullanici,sifre,adres,email,number,note):
    Session = sessionmaker(bind=engine)
    session = Session()
-   tea=Teacher(username=kullanici,password=sifre,name=ad,surname=soyad,adres=adres,email=email,number=number)
+   tea=Teacher(username=kullanici,password=sifre,name=ad,surname=soyad,adres=adres,email=email,number=number,note=note)
    session.add(tea)
    session.commit()
 
@@ -142,6 +142,20 @@ def UpdateUser(id,user2):
    user.email=user2.email
    user.number=user2.number
    user.adres=user2.adres
+   session.commit()
+
+def UpdateTeacher(id,teacher2):
+   Session = sessionmaker(bind=engine)
+   session = Session()
+   teacher=session.query(Teacher).filter(Teacher.Tea_id==id).scalar()
+   teacher.name=teacher2.name
+   teacher.surname=teacher2.surname
+   teacher.email=teacher2.email
+   teacher.number=teacher2.number
+   teacher.adres=teacher2.adres
+   teacher.note=teacher2.note2
+   teacher.takvim=teacher2.takvim
+   teacher.arastirma=teacher2.arastirma
    session.commit()
 
 def GetUser(id):
@@ -247,14 +261,14 @@ def TalepOlustur(konu,teacher_id,student_id,teacherName,studentName,time):
 #DeleteRandevu(1)
 
 #OgretmenEkle('ziya','kaba','ziyas','asde3241','yeldiz sok.','ziya@gmail.com','533432123')
-# 
-# Base.metadata.create_all(engine)
-# OgrenciEkle('alperen','aksu','alperen','1234','mefkure sok.','aksulperen@gmail.com','535532123')
-# OgrenciEkle('ömer','aytekin','ömer','1234','mefkure sok.','aksulperen@gmail.com','535532123')
-# OgrenciEkle('ufuk','yılmaz','ufuk','1234','mefkure sok.','aksulperen@gmail.com','535532123')
-# OgretmenEkle('cihan','taysi','cihan','1234','mefkure sok.','aksulperen@gmail.com','535532123')
-# OgretmenEkle('amac','güven','amac','1234','mefkure sok.','aksulperen@gmail.com','535532123')
-# OgretmenEkle('göksel','biricil','göksel','1234','mefkure sok.','aksulperen@gmail.com','535532123')
+
+#Base.metadata.create_all(engine)
+#OgrenciEkle('alperen','aksu','alperen','1234','mefkure sok.','aksulperen@gmail.com','535532123')
+#OgrenciEkle('ömer','aytekin','ömer','1234','mefkure sok.','aksulperen@gmail.com','535532123')
+#OgrenciEkle('ufuk','yılmaz','ufuk','1234','mefkure sok.','aksulperen@gmail.com','535532123')
+#OgretmenEkle('zeynep','akca','zeynep','1234','mefkure sok.','aksulperen@gmail.com','535532123',"asdasdasder")
+#OgretmenEkle('amac','güven','amac','1234','mefkure sok.','aksulperen@gmail.com','535532123')
+#OgretmenEkle('göksel','biricil','göksel','1234','mefkure sok.','aksulperen@gmail.com','535532123')
 #Session = sessionmaker(bind=engine)
 #session = Session()
 #session.query(Student).filter(Student.Stu_name=='alperen').delete()

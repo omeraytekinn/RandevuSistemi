@@ -117,8 +117,15 @@ def profile():
         email=form.email.data
         telefon=form.telefon.data
         adres=form.adres.data
-        user=Classes.User(name=ad,surname=soyad,email=email,adres=adres,number=telefon)
-        Classes.UpdateUser(session['id'],user)
+        if user.user_type =='Student':
+            user=Classes.User(name=ad,surname=soyad,email=email,adres=adres,number=telefon)
+            Classes.UpdateUser(session['id'],user)
+        else:
+            note=form.notes.data
+            arastirma=form.research.data
+            takvim=form.schedule.data
+            teacher=Classes.Teacher(name=ad,surname=soyad,email=email,adres=adres,number=telefon,note=note,arastirma=arastirma,takvim=takvim)
+            Classes.UpdateTeacher(session['id'],teacher)
         return redirect(url_for('profile'))
     ### Burada auth ile kullanıcı tipi gönderiliyor
     ### Burada auth, loginde yapılan giriş türüne göre
