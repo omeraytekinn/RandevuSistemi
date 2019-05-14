@@ -217,6 +217,14 @@ def GetTalepRandevu(id,type):
    session.commit()
    return randevus
 
+def GetRandevu(id):
+   Session = sessionmaker(bind=engine)
+   session = Session()
+   randevu=session.query(Randevu).filter(Randevu.id==id).scalar()
+   session.expunge_all()
+   session.commit()
+   return randevu
+
 def CheckDateTime():
    Session = sessionmaker(bind=engine)
    session = Session()
@@ -227,7 +235,6 @@ def CheckDateTime():
       if randevu.Randevu_date < currenttime:
          randevu.IsItPast=True
    session.commit()
-
 
 
 def RandevuOnay(id):
