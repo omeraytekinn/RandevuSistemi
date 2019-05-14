@@ -13,10 +13,12 @@
     </tr>
   </thead>
   <tbody>
+    {%for randevu in GelecekRandevu%}
+    {%if  not randevu.IsItPast%}
     <tr>
-      <td>ZCT</td>
-      <td>proje</td>
-      <td>09.09.2009</td>
+      <td>{{randevu.teacherName}}</td>
+      <td>{{randevu.Topic}}</td>
+      <td>{{randevu.Randevu_date}}</td>
       <td>
         <h5>
           <span class="badge badge-success">Aktif Randevu</span>
@@ -28,10 +30,14 @@
         </div>
       </td>
     </tr>
+    {%endif%}
+    {%endfor%}
+
+    {%for randevu in TalepRandevu%}
     <tr>
-      <td>ASD</td>
-      <td>DENEME</td>
-      <td>09.09.2009</td>
+      <td>{{randevu.teacherName}}</td>
+      <td>{{randevu.Topic}}</td>
+      <td>{{randevu.Randevu_date}}</td>
       <td>
         <h5>
           <span class="badge badge-primary">Onay Bekleniyor</span>
@@ -43,10 +49,14 @@
         </div>
       </td>
     </tr>
+    {%endfor%}
+
+    {%for randevu in GelecekRandevu%}
+    {%if randevu.IsItPast%}
     <tr>
-      <td>Ferkan</td>
-      <td>fütürizm</td>
-      <td>10.10.2010</td>
+      <td>{{randevu.teacherName}}</td>
+      <td>{{randevu.Topic}}</td>
+      <td>{{randevu.Randevu_date}}</td>
       <td>
         <h5>
           <span class="badge badge-warning">Değerlendirilecek</span>
@@ -58,12 +68,17 @@
         </div>
       </td>
     </tr>
+    {%else%}
+    {%endif%}
+    {%endfor%}
+
+    {%for randevu in PastRandevu %}
     <tr>
-      <td>Göksel</td>
+      <td>{{randevu.teacherName}}</td>
       <td>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        <p>{{randevu.Topic}}</p>
       </td>
-      <td>11.11.2011</td>
+      <td>{{randevu.Randevu_date}}</td>
       <td>
         <h5>
           <span class="badge badge-secondary">Geçmiş Randevu</span>
@@ -74,6 +89,7 @@
         </div>
       </td>
     </tr>
+    {%endfor%}
   </tbody>
 </table>
 

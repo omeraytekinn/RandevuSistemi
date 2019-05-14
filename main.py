@@ -2,6 +2,10 @@ from flask import Flask, render_template, redirect, url_for ,session, flash, req
 from functools import wraps
 from form import LoginForm, OgrenciProfilForm
 import Classes
+import datetime
+from enum import Enum
+
+
 
 app = Flask(__name__)
 
@@ -62,6 +66,7 @@ stdnavOfYonetici = [
 ]
 
 
+
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -116,7 +121,6 @@ def profile():
     ### Burada auth ile kullanıcı tipi gönderiliyor
     ### Burada auth, loginde yapılan giriş türüne göre
     ### ogrenci, ogretmen, yonetici değerlerini alabilir
-    ### ona göre yaparsınız artık bunu
     return render_template('profil_layout.html', navbar=navbar, form=form, auth=user.user_type,user=user)
 
 @app.route('/randevutalep')
@@ -125,10 +129,15 @@ def randevutalep():
         teacher=Classes.GetTeachers()
         return render_template('randevu_talep.html', navbar=stdnavOfStudent,teachers=teacher)
 
+
+
 @app.route('/randevular')
 @login_required
 def randevular():
-    return render_template('randevular_layout.html', navbar=stdnavOfStudent)
+    gecmisrandevular=Classes.GetGecmisRandevu(session["id"])
+    gelecekrandevular=Classes.GetGelecekRandevu(session["id"])
+    taleprandevular=Classes.GetTalepRandevu(session["id"])
+    return render_template('randevular_layout.html', navbar=stdnavOfStudent,PastRandevu=gecmisrandevular,GelecekRandevu=gelecekrandevular,TalepRandevu=taleprandevular)
 
 @app.route('/logout')
 def logout():
@@ -142,6 +151,7 @@ def show_profile(id):
     _teacher = {
         'name': teacher.name,
         'surname': teacher.surname,
+<<<<<<< HEAD
         'email': teacher.email
         ## devamı da buraya
     }
@@ -150,6 +160,12 @@ def show_profile(id):
 @app.route('/ogrenciekle')
 def ogrenciekle():
     return render_template('ogrenci_ekle.html', navbar=stdnavOfStudent)
+=======
+        'email': teacher.email,
+        'tel' : teacher.number
+    }
+    return jsonify(_teacher)
+>>>>>>> b68dbc23035c1b9b50ac1b5ee97d53e6944262b8
 
 @app.route('/ogretmenekle')
 def ogretmenekle():

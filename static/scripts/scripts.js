@@ -70,15 +70,16 @@ $(document).ready(function () {
         ]
     });
 
-    var profilID;
-    $(".profile-btn").click(function(){
-      profilID = $(this).attr("name");
+    var profilid;
+    $(".profil-btn").click(function(){
+      profilid = $(this).attr("name");
       $.ajax({
-        url: 'get/profile/'+profilID,
+        url: 'get/profile/'+profilid,
         success: function(data) {
           $('#profile-modal .modal-icerik').eq(0).html(data.name);
           $('#profile-modal .modal-icerik').eq(1).html(data.surname);
-          $('#profile-modal .modal-icerik').eq(2).html(data.email);
+          $('#profile-modal .modal-icerik').eq(2).html(data.tel);
+          $('#profile-modal .modal-icerik').eq(3).html(data.email);
         }
       });
     });
@@ -98,35 +99,5 @@ $(document).ready(function () {
     }
     $('#hour-select').append(hours);
 
-    /*
-        var weekTable = $('<table>').addClass('week-table');
-        var gunler = ['Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma']
-        var row = $('<tr>').addClass('days').addClass('row');
-        var col = $('<td>').addClass('col-2').text('Tarih:');
-        row.append(col);
-        for(i=0; i<5; i++){
-          var col = $('<td>').text(gunler[i]).addClass('col-2');
-          row.append(col);
-          weekTable.append(row);
-        }
-        for(i=0; i<8; i++){
-          var row = $('<tr>').addClass('row');
-          var col = $('<td>').text((i+9)+':00').addClass('col-2');
-          row.append(col);
-          for(j=0; j<5; j++){
-            var col = $('<td>').attr({row:i, col:j}).addClass('col-2');
-            var check = $('<input>').attr({
-                          type: 'radio',
-                          name: 'date',
-                          value: i+'-'+j
-                        });
-            col.append(check);
-            row.append(col);
-          }
-          weekTable.append(row);
-        }
-        $('#here_table').append(weekTable);
-
-    */
 
 });
