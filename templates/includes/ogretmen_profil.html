@@ -10,7 +10,7 @@
 <div class="form-row">
   {{ form.research.label(class="col-3 col-form-label text-left") }}
   {% set f = form.adres.process_data(user.name) %}
-  {{ form.research(class="form-control-plaintext col-9",value=user.name, readonly="", style="resize: none" ) }}
+  {{ form.research(class="form-control-plaintext col-9", readonly="", style="resize: none" ) }}
 </div>
 <div class="form-row">
   {{ form.schedule.label(class="col-3 col-form-label text-left") }}
