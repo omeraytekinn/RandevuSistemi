@@ -159,6 +159,13 @@ def show_profile(id):
         'tel' : teacher.number
     }
     return jsonify(_teacher)
+<<<<<<< HEAD
+=======
+
+@app.route('/ogrenciekle')
+def ogrenciekle():
+    return render_template('ogrenci_ekle.html', navbar=stdnavOfStudent)
+>>>>>>> aaksul-master
 
 @app.route('/ogretmenekle')
 def ogretmenekle():
