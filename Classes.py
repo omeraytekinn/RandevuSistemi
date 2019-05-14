@@ -30,6 +30,9 @@ class Student(User):
 class Teacher(User):
    __tablename__ = 'teacher'
    Tea_id = Column(Integer,ForeignKey('user.id',ondelete='CASCADE'),primary_key=True)
+   note=Column(String(50))
+   arastirma=Column(String(50))
+   DersProgramı=Column(String(50))
    __mapper_args__={'polymorphic_identity':'Teacher'}
 
 
@@ -159,6 +162,7 @@ def GetTeachers():
    Session = sessionmaker(bind=engine)
    session = Session()
    teachers=session.query(Teacher).all()
+   session.expunge_all()
    session.commit()
    return teachers
 

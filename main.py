@@ -126,14 +126,9 @@ def profile():
 @app.route('/randevutalep', methods=['POST', 'GET'])
 @login_required
 def randevutalep():
-        form = request.form
-        if form:
-            hour = form.get('hour')
-            minute = form.get('minute')
-            date = form.get('date')
-            flash('Randevu Başarıyla Kaydedildi!', 'success')
+        form=request.form
         teacher=Classes.GetTeachers()
-        return render_template('randevu_talep.html', navbar=stdnavOfStudent,teachers=teacher, form=form)
+        return render_template('randevu_talep.html', navbar=stdnavOfStudent,teachers=teacher)
 
 @app.route('/randevular')
 @login_required
@@ -156,7 +151,10 @@ def show_profile(id):
         'name': teacher.name,
         'surname': teacher.surname,
         'email': teacher.email,
-        'tel' : teacher.number
+        'tel' : teacher.number,
+        'arastirma':teacher.arastirma,
+        'schedule':teacher.takvim,
+        'notes':teacher.note
     }
     return jsonify(_teacher)
     
