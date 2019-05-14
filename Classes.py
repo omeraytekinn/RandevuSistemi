@@ -102,6 +102,27 @@ def DeleteUser(id):
       session.delete(user)
    session.commit()
 
+
+def DeleteRandevu(id):
+   Session = sessionmaker(bind=engine)
+   session = Session()
+   randevus = session.query(GecmisRandevu).filter(Randevu.id ==id).all()
+   for randevu in randevus:
+      session.delete(randevu)
+   session.commit()
+   Session = sessionmaker(bind=engine)
+   session = Session()
+   randevus2 = session.query(GelecekRandevu).filter(Randevu.id ==id).all()
+   for randevu in randevus2:
+      session.delete(randevu)
+   session.commit()
+   Session = sessionmaker(bind=engine)
+   session = Session()
+   randevus3 = session.query(TalepRandevu).filter(Randevu.id ==id).all()
+   for randevu in randevus3:
+      session.delete(randevu)
+   session.commit()
+
 def GetId(username):
    Session = sessionmaker(bind=engine)
    session = Session()
@@ -167,7 +188,50 @@ def GetTalepRandevu(id):
    session.commit()
    return randevus
 
-#DeleteUser(4)
+def CheckDateTime():
+   Session = sessionmaker(bind=engine)
+   session = Session()
+   randevus=session.query(GelecekRandevu).all()
+   x = datetime.datetime.now()
+   currenttime=datetime.datetime(x.year,x.month,x.day,x.hour,x.minute,x.second)
+   for randevu in randevus:
+      if randevu.Randevu_date < currenttime:
+         randevu.IsItPast=True
+   session.commit()
+
+
+
+def RandevuOnay(id):
+   Session = sessionmaker(bind=engine)
+   session = Session()
+   randevu=session.query(TalepRandevu).filter(TalepRandevu.Talep_id==id).scalar()
+   id=randevu.Talep_id
+   GelRandevu=GelecekRandevu(id=randevu.Talep_id,Topic=randevu.Topic,teacher_id=randevu.teacher_id,student_id=randevu.student_id,teacherName=randevu.teacherName,studentName=randevu.studentName,Randevu_date=randevu.Randevu_date,NoteOfStudent=randevu.TalepNotu)
+   session.commit()
+   DeleteRandevu(id)
+   Session = sessionmaker(bind=engine)
+   session = Session()
+   session.add(GelRandevu)
+   session.commit()
+
+def RandevuBitir(id,RandevuNotu):
+   Session = sessionmaker(bind=engine)
+   session = Session()
+   randevu=session.query(GelecekRandevu).filter(GelecekRandevu.Gelecek_id==id).scalar()
+   id=randevu.Gelecek_id
+   GecRandevu=GecmisRandevu(id=randevu.Gelecek_id,Topic=randevu.Topic,teacher_id=randevu.teacher_id,student_id=randevu.student_id,teacherName=randevu.teacherName,studentName=randevu.studentName,Randevu_date=randevu.Randevu_date,RanDegerNotu=RandevuNotu)
+   session.commit()
+   DeleteRandevu(id)
+   Session = sessionmaker(bind=engine)
+   session = Session()
+   session.add(GecRandevu)
+   session.commit()
+
+
+#RandevuBitir(1,"asdasda")
+#DeleteUser(3)
+#DeleteRandevu(1)
+
 #OgretmenEkle('ziya','kaba','ziyas','asde3241','yeldiz sok.','ziya@gmail.com','533432123')
 
 #Base.metadata.create_all(engine)
