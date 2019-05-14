@@ -132,10 +132,15 @@ def randevutalep():
             hour = form.get('hour')
             minute = form.get('minute')
             date = form.get('date')
-            id = form.get('id')
+            date=date.split("/")
+            dateformat=datetime.datetime(date[2],date[1],date[0],hour,minute)
+            teacher_id = form.get('id')
+            teacher=Classes.GetTeacher(teacher_id)
+            ogrenci=Classes.GetUser(session["id"])
+            Classes.TalepOlustur(konu,teacher_id,session["id"],teacher.name,ogrenci.name,dateformat)
             flash('Randevu Başarıyla Kaydedildi!', 'success')
         teacher=Classes.GetTeachers()
-        return render_template('randevu_talep.html', navbar=stdnavOfStudent,teachers=teacher, form=form)
+        return render_template('randevu_talep.html', navbar=stdnavOfStudent,teachers=teacher)
 
 @app.route('/randevular')
 @login_required
