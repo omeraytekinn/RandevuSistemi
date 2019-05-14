@@ -25,7 +25,7 @@ $(document).ready(function () {
   });
 
 
-    $('#teacherTable').DataTable( {
+    $('#listTable').DataTable( {
           "order": [[ 3, "asc" ]],
           language: {
             "decimal":        "",
@@ -124,5 +124,10 @@ $(document).ready(function () {
     }
     $('#minute-select').append(minutes);
 
+    $('.iptal-btn').click(function(){
+      var resp = confirm('Silmeyi Onaylıyor Musunuz?');
+      if(resp == true)
+        window.location.replace("/randevu/iptal/"+$('.iptal-btn').attr('name'));
+    });
 
 });

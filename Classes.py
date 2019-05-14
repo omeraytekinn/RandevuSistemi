@@ -247,14 +247,14 @@ def TalepOlustur(konu,teacher_id,student_id,teacherName,studentName,time):
 #DeleteRandevu(1)
 
 #OgretmenEkle('ziya','kaba','ziyas','asde3241','yeldiz sok.','ziya@gmail.com','533432123')
-
-#Base.metadata.create_all(engine)
-#OgrenciEkle('alperen','aksu','alperen','1234','mefkure sok.','aksulperen@gmail.com','535532123')
-#OgrenciEkle('ömer','aytekin','ömer','1234','mefkure sok.','aksulperen@gmail.com','535532123')
-#OgrenciEkle('ufuk','yılmaz','ufuk','1234','mefkure sok.','aksulperen@gmail.com','535532123')
-#OgretmenEkle('cihan','taysi','cihan','1234','mefkure sok.','aksulperen@gmail.com','535532123')
-#OgretmenEkle('amac','güven','amac','1234','mefkure sok.','aksulperen@gmail.com','535532123')
-#OgretmenEkle('göksel','biricil','göksel','1234','mefkure sok.','aksulperen@gmail.com','535532123')
+# 
+# Base.metadata.create_all(engine)
+# OgrenciEkle('alperen','aksu','alperen','1234','mefkure sok.','aksulperen@gmail.com','535532123')
+# OgrenciEkle('ömer','aytekin','ömer','1234','mefkure sok.','aksulperen@gmail.com','535532123')
+# OgrenciEkle('ufuk','yılmaz','ufuk','1234','mefkure sok.','aksulperen@gmail.com','535532123')
+# OgretmenEkle('cihan','taysi','cihan','1234','mefkure sok.','aksulperen@gmail.com','535532123')
+# OgretmenEkle('amac','güven','amac','1234','mefkure sok.','aksulperen@gmail.com','535532123')
+# OgretmenEkle('göksel','biricil','göksel','1234','mefkure sok.','aksulperen@gmail.com','535532123')
 #Session = sessionmaker(bind=engine)
 #session = Session()
 #session.query(Student).filter(Student.Stu_name=='alperen').delete()

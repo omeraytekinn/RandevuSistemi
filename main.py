@@ -108,6 +108,7 @@ def profile():
         form = OgrenciProfilForm()
     if user.user_type == 'Teacher':
         navbar=stdnavOfTeacher
+        user=Classes.GetTeacher(session['id'])
         form = OgretmenProfilForm()
 
     if form.validate_on_submit():
@@ -132,8 +133,9 @@ def randevutalep():
             hour = form.get('hour')
             minute = form.get('minute')
             date = form.get('date')
-            date=date.split("/")
-            dateformat=datetime.datetime(date[2],date[1],date[0],hour,minute)
+            date=date.split("-")
+            konu=form.get('topic')
+            dateformat=datetime.datetime(int(date[2]),int(date[1]),int(date[0]),int(hour),int(minute))
             teacher_id = form.get('id')
             teacher=Classes.GetTeacher(teacher_id)
             ogrenci=Classes.GetUser(session["id"])
@@ -177,6 +179,12 @@ def ogretmenekle():
 @app.route('/ogrenciekle')
 def ogrenciekle():
     return render_template('ogrenci_ekle.html', navbar=stdnavOfStudent)
+
+@app.route('/randevu/iptal/<id>')
+def randevuiptal(id):
+    Classes.DeleteRandevu(id)
+    flash('Randevunuz İptal Edildi!', 'error')
+    return redirect(url_for('randevular'))
 
 if __name__ == '__main__':
     app.run(debug=True)

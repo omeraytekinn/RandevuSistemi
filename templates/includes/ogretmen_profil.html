@@ -9,17 +9,17 @@
 </div>
 <div class="form-row">
   {{ form.research.label(class="col-3 col-form-label text-left") }}
-  {% set f = form.adres.process_data(user.research) %}
+  {% set f = form.research.process_data(user.arastirma) %}
   {{ form.research(class="form-control-plaintext col-9", readonly="", style="resize: none" ) }}
 </div>
 <div class="form-row">
   {{ form.schedule.label(class="col-3 col-form-label text-left") }}
-  {% set f = form.adres.process_data(user.schedule) %}
+  {% set f = form.schedule.process_data(user.takvim) %}
   {{ form.schedule(class="form-control-plaintext col-9", readonly="", style="resize: none" ) }}
 </div>
 <div class="form-row">
   {{ form.notes.label(class="col-3 col-form-label text-left") }}
-  {% set f = form.adres.process_data(user.notes) %}
+  {% set f = form.notes.process_data(user.note) %}
   {{ form.notes(class="form-control-plaintext col-9", readonly="", style="resize: none" ) }}
 </div>
 <div class="form-row">
