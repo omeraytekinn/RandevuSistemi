@@ -151,21 +151,14 @@ def show_profile(id):
     _teacher = {
         'name': teacher.name,
         'surname': teacher.surname,
-<<<<<<< HEAD
-        'email': teacher.email
-        ## devamı da buraya
+        'email': teacher.email,
+        'tel' : teacher.number
     }
     return jsonify(_teacher)
 
 @app.route('/ogrenciekle')
 def ogrenciekle():
     return render_template('ogrenci_ekle.html', navbar=stdnavOfStudent)
-=======
-        'email': teacher.email,
-        'tel' : teacher.number
-    }
-    return jsonify(_teacher)
->>>>>>> b68dbc23035c1b9b50ac1b5ee97d53e6944262b8
 
 @app.route('/ogretmenekle')
 def ogretmenekle():
