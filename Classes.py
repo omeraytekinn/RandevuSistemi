@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine,Column, Integer, String ,ForeignKey,case,DateTime
+from sqlalchemy import create_engine,Column, Integer, String ,ForeignKey,case,DateTime,Boolean
 from sqlalchemy.orm import column_property, relationship,sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 import datetime
@@ -24,12 +24,12 @@ class User(Base):
 
 class Student(User):
    __tablename__ = 'student'
-   Stu_id = Column(Integer,ForeignKey('user.id'),primary_key=True)
+   Stu_id = Column(Integer,ForeignKey('user.id',ondelete='CASCADE'),primary_key=True)
    __mapper_args__={'polymorphic_identity':'Student'}
 
 class Teacher(User):
    __tablename__ = 'teacher'
-   Tea_id = Column(Integer,ForeignKey('user.id'),primary_key=True)
+   Tea_id = Column(Integer,ForeignKey('user.id',ondelete='CASCADE'),primary_key=True)
    __mapper_args__={'polymorphic_identity':'Teacher'}
 
 
@@ -37,46 +37,38 @@ class Teacher(User):
 class Randevu(Base):
    __tablename__='randevu'
    id=Column(Integer,primary_key=True)
+   Topic=Column(String(50))
    teacher_id=Column(Integer,ForeignKey('teacher.Tea_id'))
+   teacherName=Column(String,ForeignKey('user.name'))
    student_id=Column(Integer,ForeignKey('student.Stu_id'))
+   teacherName=Column(String,ForeignKey('user.surname'))
+   studentName=Column(String)
+   Randevu_date=Column(DateTime)
    created_date = Column(DateTime, default=datetime.datetime.utcnow)
-   statue=Column(String(50))
-   randevu_type = column_property(
-      case(
-      [(statue == "DN", "GecmisRandevu"),(statue == "FT", "GelecekRandevu")],
-      else_="Randevu")
-      )
+   randevu_type = Column(String(50))
    __mapper_args__ = {'polymorphic_on':randevu_type,'polymorphic_identity':"Randevu"}
-
-
-
-class GerceklesenRandevu(Randevu):
-   __tablename__='gecmisrandevu'
-   Gerceklesen_id=Column(Integer,ForeignKey('randevu.id'),primary_key=True)
-   Pteacher_id=Column(Integer)
-   Pstudent_id=Column(Integer)
-   past_date = Column(DateTime)
-   NoteOfStudent =Column(String(256))
-   NoteOfTeacher=Column(String(256))
-   __mapper_args__ ={'polymorphic_identity':"GecmisRandevu"}
-
-class GelecekRandevu(Randevu):
-   __tablename__='gelecekrandevu'
-   Gelecek_id=Column(Integer,ForeignKey('randevu.id'),primary_key=True)
-   Fteacher_id=Column(Integer)
-   Fstudent_id=Column(Integer)
-   future_date= Column(DateTime)
-   NoteOfStudent = Column(String(256))
-   __mapper_args__ ={'polymorphic_identity':"GelecekRandevu"}
-
 
 class TalepRandevu(Randevu):
    __tablename__='taleprandevu'
    Talep_id=Column(Integer,ForeignKey('randevu.id'),primary_key=True)
+   TalepNotu = Column(String(256))
 
    __mapper_args__ ={'polymorphic_identity':"TalepRandevu"}
 
 
+class GelecekRandevu(Randevu):
+   __tablename__='gelecekrandevu'
+   Gelecek_id=Column(Integer,ForeignKey('randevu.id'),primary_key=True)
+   OgretmenNotu = Column(String(256))#ogrencinin randevu talebine karşılık öğretmen tarafından cevap
+   NoteOfStudent = Column(String(256))#ogrencinin talep notunun aynısı
+   IsItPast = Column(Boolean,default=False)
+   __mapper_args__ ={'polymorphic_identity':"GelecekRandevu"}
+
+class GecmisRandevu(Randevu):
+   __tablename__='gecmisrandevu'
+   Gecmis_id=Column(Integer,ForeignKey('randevu.id'),primary_key=True)
+   RanDegerNotu = Column(String(256))#Randevu Sonrası Öğretmen tarafından Oluşturulan Değerlendirme Yazısı
+   __mapper_args__ ={'polymorphic_identity':"GecmisRandevu"}
 
 def OgrenciEkle(ad,soyad,kullanici,sifre,adres,email,number):
    Session = sessionmaker(bind=engine)
@@ -102,7 +94,12 @@ def GetPassword(username):
 def DeleteUser(id):
    Session = sessionmaker(bind=engine)
    session = Session()
-   usertype=session.query(User.user_type).filter(User.id==id).scalar()
+   users = session.query(Student).filter(User.id ==id).all()
+   users2 = session.query(Teacher).filter(User.id ==id).all()
+   for user in users:
+      session.delete(user)
+   for user in users2:
+      session.delete(user)
    session.commit()
 
 def GetId(username):
@@ -133,7 +130,7 @@ def GetUser(id):
 def GetTeacher(id):
   Session = sessionmaker(bind=engine)
   session = Session()
-  teacher=session.query(Teacher).filter(Teacher.id==id).scalar()
+  teacher=session.query(Teacher).filter(Teacher.Tea_id==id).scalar()
   session.commit()
   return teacher
 
@@ -144,13 +141,61 @@ def GetTeachers():
    session.commit()
    return teachers
 
+
+def GetGecmisRandevu(id):
+   Session = sessionmaker(bind=engine)
+   session = Session()
+   randevus=session.query(GecmisRandevu).filter(GecmisRandevu.student_id==id).all()
+   session.expunge_all()
+   session.commit()
+   return randevus
+
+
+def GetGelecekRandevu(id):
+   Session = sessionmaker(bind=engine)
+   session = Session()
+   randevus=session.query(GelecekRandevu).filter(GelecekRandevu.student_id==id).all()
+   session.expunge_all()
+   session.commit()
+   return randevus
+
+def GetTalepRandevu(id):
+   Session = sessionmaker(bind=engine)
+   session = Session()
+   randevus=session.query(TalepRandevu).filter(TalepRandevu.student_id==id).all()
+   session.expunge_all()
+   session.commit()
+   return randevus
+
+#DeleteUser(4)
 #OgretmenEkle('ziya','kaba','ziyas','asde3241','yeldiz sok.','ziya@gmail.com','533432123')
 
 #Base.metadata.create_all(engine)
+<<<<<<< HEAD
 #OgretmenEkle('alperen','aksu','aaksu','1234','mefkure sok.','aksulperen@gmail.com','535532123')
+=======
+#OgrenciEkle('alperen','aksu','alperen','1234','mefkure sok.','aksulperen@gmail.com','535532123')
+#OgrenciEkle('ömer','aytekin','ömer','1234','mefkure sok.','aksulperen@gmail.com','535532123')
+#OgrenciEkle('ufuk','yılmaz','ufuk','1234','mefkure sok.','aksulperen@gmail.com','535532123')
+#OgretmenEkle('cihan','taysi','cihan','1234','mefkure sok.','aksulperen@gmail.com','535532123')
+#OgretmenEkle('amac','güven','amac','1234','mefkure sok.','aksulperen@gmail.com','535532123')
+#OgretmenEkle('göksel','biricil','göksel','1234','mefkure sok.','aksulperen@gmail.com','535532123')
+>>>>>>> b68dbc23035c1b9b50ac1b5ee97d53e6944262b8
 #Session = sessionmaker(bind=engine)
 #session = Session()
 #session.query(Student).filter(Student.Stu_name=='alperen').delete()
+#rande=Randevu()
+#session.add(rande)
 #session.commit()
 #pass1=GetPassword('as')
 #print (pass1)
+#time=datetime.datetime(2018,11,2)
+#rand=TalepRandevu(Topic='konu',teacher_id=5,student_id=1,teacherName='amac',studentName='alperen',Randevu_date=time)
+#rand2=GelecekRandevu(Topic='konu2',teacher_id=4,student_id=1,teacherName='cihan',studentName='alperen',Randevu_date=time)
+#rand3=GecmisRandevu(Topic='konu3',teacher_id=4,student_id=1,teacherName='cihan',studentName='alperen',Randevu_date=time)
+#Session = sessionmaker(bind=engine)
+#session = Session()
+#session.add(rand)
+#session.add(rand2)
+#session.add(rand3)
+#session.commit()
