@@ -5,7 +5,13 @@
 <table id="listTable" class="table hover display">
   <thead class="thead-light">
     <tr>
-      <th scope="col">Öğretmen Adı</th>
+      {% if user.user_type == 'Student' %}
+        <th scope="col">Öğretmen Adı</th>
+      {% elif user.user_type == 'Teacher' %}
+        <th scope="col">Öğrenci Adı</th>
+      {% elif user.user_type == 'Yonetici' %}
+        <th scope="col">Öğretmen - Öğrenci</th>
+      {% endif %}
       <th scope="col">Randevu Konusu</th>
       <th scope="col">Randevu Tarihi</th>
       <th scope="col">Durumu</th>
@@ -16,7 +22,11 @@
     {%for randevu in GelecekRandevu%}
     {%if  not randevu.IsItPast%}
     <tr>
-      <td>{{randevu.teacherName}}</td>
+      {% if user.user_type == 'Student' %}
+        <td>{{randevu.teacherName}}</td>
+      {% elif user.user_type == 'Teacher' %}
+        <td>{{randevu.studentName}}</td>
+      {% endif %}
       <td>{{randevu.Topic}}</td>
       <td>{{randevu.Randevu_date}}</td>
       <td>
@@ -26,16 +36,24 @@
       </td>
       <td>
         <div class="btn-group">
-            <button type="button" class="btn btn-danger btn-sm iptal-btn" name="{{ randevu.id }}">İptal Et</button>
+          {% if user.user_type == 'Student' %}
+            <button type="button" class="btn btn-danger btn-sm iptal-tch-btn" name="{{ randevu.id }}">İptal Et</button>
+          {% elif user.user_type == 'Teacher' %}
+            <button type="button" class="btn btn-danger btn-sm iptal-tch-btn" name="{{ randevu.id }}">İptal Et</button>
+          {% endif %}
         </div>
       </td>
     </tr>
     {%endif%}
     {%endfor%}
 
-    {%for randevu in TalepRandevu%}
+    {% for randevu in TalepRandevu %}
     <tr>
-      <td>{{randevu.teacherName}}</td>
+      {% if user.user_type == 'Student' %}
+        <td>{{randevu.teacherName}}</td>
+      {% elif user.user_type == 'Teacher' %}
+        <td>{{randevu.studentName}}</td>
+      {% endif %}
       <td>{{randevu.Topic}}</td>
       <td>{{randevu.Randevu_date}}</td>
       <td>
@@ -45,11 +63,15 @@
       </td>
       <td>
         <div class="btn-group">
-            <button type="button" class="btn btn-danger btn-sm iptal-btn" name="{{ randevu.id }}">İptal Et</button>
+          {% if user.user_type == 'Student' %}
+            <button type="button" class="btn btn-danger btn-sm iptal-std-btn" name="{{ randevu.id }}">İptal Et</button>
+          {% elif user.user_type == 'Teacher' %}
+            <button type="button" class="btn btn-danger btn-sm iptal-tch-btn" name="{{ randevu.id }}">İptal Et</button>
+          {% endif %}
         </div>
       </td>
     </tr>
-    {%endfor%}
+    {% endfor %}
 
     {%for randevu in GelecekRandevu%}
     {%if randevu.IsItPast%}
@@ -64,7 +86,9 @@
       </td>
       <td>
         <div class="btn-group">
-            <button type="button" class="btn btn-primary btn-sm classloader" name="button">Değerlendir</button>
+          {% if user.user_type == 'Student' %}
+            <button type="button" class="btn btn-danger btn-sm survey-btn" name="{{ randevu.id }}">Değerlendir</button>
+          {% endif %}
         </div>
       </td>
     </tr>
@@ -92,5 +116,7 @@
     {%endfor%}
   </tbody>
 </table>
+
+{% include 'includes/randevu_iptal_modal.html' %}
 
 {% endblock %}

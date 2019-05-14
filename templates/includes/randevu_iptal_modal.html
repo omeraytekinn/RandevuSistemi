@@ -1,0 +1,24 @@
+<div id="randevuiptal-modal" class="modal fade" role="dialog">
+  <form class="form-horizontal" method="post">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">İptal Onay</h4>
+        </div>
+        <div class="modal-body ml-3 row">
+          <div class="col-3">
+            İptal Sebebi:
+          </div>
+          <div class="modal-icerik col-9">
+            <textarea name="reason" class="form-control" style="resize:none" placeholder="Randevu iptal sebebini belirtiniz..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <input type="hidden" name="id" id="randevu-id">
+          <input type="submit" class="btn btn-warning randevuiptal-form-btn" value="Onayla">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

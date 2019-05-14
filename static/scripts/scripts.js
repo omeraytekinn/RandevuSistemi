@@ -124,10 +124,13 @@ $(document).ready(function () {
     }
     $('#minute-select').append(minutes);
 
-    $('.iptal-btn').click(function(){
+    $('.iptal-std-btn').click(function(){
       var resp = confirm('Silmeyi Onaylıyor Musunuz?');
       if(resp == true)
-        window.location.replace("/randevu/iptal/"+$('.iptal-btn').attr('name'));
+        window.location.replace("/randevu/sil/"+$(this).attr('name'));
+    });
+    $('.iptal-tch-btn').click(function(){
+      $('#randevuiptal-modal #randevu-id').attr('value',$(this).attr('name'));
     });
 
 });

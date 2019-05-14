@@ -154,6 +154,10 @@ def randevutalep():
 @app.route('/randevular')
 @login_required
 def randevular():
+    form = request.form
+    if form:
+        Classes.RandevuBitir(form.get('id'),'İptal - '+form.get('reason'))
+        flash('Randevu İptal Edildi!','error');
     gecmisrandevular=Classes.GetGecmisRandevu(session["id"])
     gelecekrandevular=Classes.GetGelecekRandevu(session["id"])
     taleprandevular=Classes.GetTalepRandevu(session["id"])
@@ -162,7 +166,7 @@ def randevular():
 @app.route('/logout')
 def logout():
         session.clear()
-        flash('Çıkış Başarılı', 'success')
+        flash('Çıkış Başarılı!', 'success')
         return redirect('/')
 
 @app.route('/get/profile/<id>')
@@ -187,8 +191,8 @@ def ogretmenekle():
 def ogrenciekle():
     return render_template('ogrenci_ekle.html', navbar=stdnavOfStudent)
 
-@app.route('/randevu/iptal/<id>')
-def randevuiptal(id):
+@app.route('/randevu/sil/<id>')
+def randevusil(id):
     Classes.DeleteRandevu(id)
     flash('Randevunuz İptal Edildi!', 'error')
     return redirect(url_for('randevular'))

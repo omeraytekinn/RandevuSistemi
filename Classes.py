@@ -153,7 +153,7 @@ def UpdateTeacher(id,teacher2):
    teacher.email=teacher2.email
    teacher.number=teacher2.number
    teacher.adres=teacher2.adres
-   teacher.note=teacher2.note2
+   teacher.note=teacher2.note
    teacher.takvim=teacher2.takvim
    teacher.arastirma=teacher2.arastirma
    session.commit()
