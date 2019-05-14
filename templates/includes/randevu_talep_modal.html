@@ -1,34 +1,38 @@
 <div id="randevual-modal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Profil Bilgileri</h4>
-      </div>
-
-      <div class="modal-body ml-3 row">
-        <div class="col-3">
-          Ad:
+  <form class="form-horizontal" method="post">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Profil Bilgileri</h4>
         </div>
-        <div class="modal-icerik col-9"></div>
-        <div class="col-3">
-          Soyad:
+        <div class="modal-body ml-3 row">
+          <div class="col-3">
+            Ad:
+          </div>
+          <div class="modal-icerik col-9"></div>
+          <div class="col-3">
+            Soyad:
+          </div>
+          <div class="modal-icerik col-9"></div>
+          <div class="col-3">
+            Tarih:
+          </div>
+          <div id='date-picker' class="col-9">
+            <input type="text" name="date">
+          </div>
+          <div class="col-3">
+            Saat:
+          </div>
+          <div class="row col-9 time-select">
+            <div id='hour-select' class=""></div>
+            <div id='minute-select' class="">:</div>
+          </div>
         </div>
-        <div class="modal-icerik col-9"></div>
-        <div class="col-3">
-          Tarih:
+        <div class="modal-footer">
+          <input type="submit" class="btn btn-primary randevual-form-btn" value="Randevu Al">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
         </div>
-        <div id='date-picker' class="col-9">
-          <input type="text" name="date">
-        </div>
-        <div class="col-3">
-          Saat:
-        </div>
-        <div id='hour-select' class="col-9">
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary">Randevu Al</button>
       </div>
     </div>
-  </div>
+  </form>
 </div>

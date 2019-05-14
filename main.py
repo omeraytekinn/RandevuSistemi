@@ -123,13 +123,17 @@ def profile():
     ### ogrenci, ogretmen, yonetici değerlerini alabilir
     return render_template('profil_layout.html', navbar=navbar, form=form, auth=user.user_type,user=user)
 
-@app.route('/randevutalep')
+@app.route('/randevutalep', methods=['POST', 'GET'])
 @login_required
 def randevutalep():
+        form = request.form
+        if form:
+            hour = form.get('hour')
+            minute = form.get('minute')
+            date = form.get('date')
+            flash('Randevu Başarıyla Kaydedildi!', 'success')
         teacher=Classes.GetTeachers()
-        return render_template('randevu_talep.html', navbar=stdnavOfStudent,teachers=teacher)
-
-
+        return render_template('randevu_talep.html', navbar=stdnavOfStudent,teachers=teacher, form=form)
 
 @app.route('/randevular')
 @login_required
@@ -151,25 +155,18 @@ def show_profile(id):
     _teacher = {
         'name': teacher.name,
         'surname': teacher.surname,
-<<<<<<< HEAD
-        'email': teacher.email
-        ## devamı da buraya
-    }
-    return jsonify(_teacher)
-
-@app.route('/ogrenciekle')
-def ogrenciekle():
-    return render_template('ogrenci_ekle.html', navbar=stdnavOfStudent)
-=======
         'email': teacher.email,
         'tel' : teacher.number
     }
     return jsonify(_teacher)
->>>>>>> b68dbc23035c1b9b50ac1b5ee97d53e6944262b8
 
 @app.route('/ogretmenekle')
 def ogretmenekle():
     return render_template('ogretmen_ekle.html', navbar=stdnavOfStudent)
+
+@app.route('/ogrenciekle')
+def ogrenciekle():
+    return render_template('ogrenci_ekle.html', navbar=stdnavOfStudent)
 
 if __name__ == '__main__':
     app.run(debug=True)
