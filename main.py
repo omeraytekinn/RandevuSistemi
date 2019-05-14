@@ -108,6 +108,7 @@ def profile():
         form = OgrenciProfilForm()
     if user.user_type == 'Teacher':
         navbar=stdnavOfTeacher
+        user=Classes.GetTeacher(session['id'])
         form = OgretmenProfilForm()
 
     if form.validate_on_submit():
@@ -116,8 +117,15 @@ def profile():
         email=form.email.data
         telefon=form.telefon.data
         adres=form.adres.data
-        user=Classes.User(name=ad,surname=soyad,email=email,adres=adres,number=telefon)
-        Classes.UpdateUser(session['id'],user)
+        if user.user_type =='Student':
+            user=Classes.User(name=ad,surname=soyad,email=email,adres=adres,number=telefon)
+            Classes.UpdateUser(session['id'],user)
+        else:
+            note=form.notes.data
+            arastirma=form.research.data
+            takvim=form.schedule.data
+            teacher=Classes.Teacher(name=ad,surname=soyad,email=email,adres=adres,number=telefon,note=note,arastirma=arastirma,takvim=takvim)
+            Classes.UpdateTeacher(session['id'],teacher)
         return redirect(url_for('profile'))
     ### Burada auth ile kullanıcı tipi gönderiliyor
     ### Burada auth, loginde yapılan giriş türüne göre
@@ -132,8 +140,9 @@ def randevutalep():
             hour = form.get('hour')
             minute = form.get('minute')
             date = form.get('date')
-            date=date.split("/")
-            dateformat=datetime.datetime(date[2],date[1],date[0],hour,minute)
+            date=date.split("-")
+            konu=form.get('topic')
+            dateformat=datetime.datetime(int(date[2]),int(date[1]),int(date[0]),int(hour),int(minute))
             teacher_id = form.get('id')
             teacher=Classes.GetTeacher(teacher_id)
             ogrenci=Classes.GetUser(session["id"])
