@@ -25,50 +25,50 @@ $(document).ready(function () {
   });
 
 
-    $('#listTable').DataTable( {
-          "order": [[ 3, "asc" ]],
-          language: {
-            "decimal":        "",
-            "emptyTable":     "Veri bulunamadı!",
-            "info":           "_TOTAL_ öğretmenden _START_ ile _END_ arasındakiler gösteriliyor",
-            "infoEmpty":      "",
-            "infoFiltered":   "",
-            "infoPostFix":    "",
-            "thousands":      ",",
-            "lengthMenu":     "Öğretim Üyeleri  ",
-            "loadingRecords": "Yükleniyor...",
-            "processing":     "İşleniyor...",
-            "search":         "Ara:",
-            "zeroRecords":    "İstenen kayıt bulunamadı",
-            "paginate": {
-                "first":      "<<",
-                "last":       ">>",
-                "next":       ">",
-                "previous":   "<"
-            },
-            "aria": {
-                "sortAscending":  ":",
-                "sortDescending": ":"
-            }
-          },
-      columns:[
-        	{
-            	"sortable": true
-            },
-            {
-            	"sortable": true
-            },
-            {
-            	"sortable": false
-            },
-            {
-            	"sortable": false
-            },
-            {
-            	"sortable": false
-            }
-        ]
-    });
+  $('#listTable').DataTable( {
+    "order": [[ 3, "asc" ]],
+    language: {
+      "decimal":        "",
+      "emptyTable":     "Veri bulunamadı!",
+      "info":           "_TOTAL_ öğretmenden _START_ ile _END_ arasındakiler gösteriliyor",
+      "infoEmpty":      "",
+      "infoFiltered":   "",
+      "infoPostFix":    "",
+      "thousands":      ",",
+      "lengthMenu":     "Öğretim Üyeleri  ",
+      "loadingRecords": "Yükleniyor...",
+      "processing":     "İşleniyor...",
+      "search":         "Ara:",
+      "zeroRecords":    "İstenen kayıt bulunamadı",
+      "paginate": {
+          "first":      "<<",
+          "last":       ">>",
+          "next":       ">",
+          "previous":   "<"
+      },
+      "aria": {
+          "sortAscending":  ":",
+          "sortDescending": ":"
+      }
+    },
+  columns:[
+  	{
+    	"sortable": true
+    },
+    {
+    	"sortable": true
+    },
+    {
+    	"sortable": false
+    },
+    {
+    	"sortable": false
+    },
+    {
+    	"sortable": false
+    }
+  ]
+  });
 
     var profilID;
     $(".profile-btn").click(function(){
@@ -129,8 +129,28 @@ $(document).ready(function () {
       if(resp == true)
         window.location.replace("/randevu/sil/"+$(this).attr('name'));
     });
+
     $('.iptal-tch-btn').click(function(){
       $('#randevuiptal-modal #randevu-id').attr('value',$(this).attr('name'));
+    });
+
+    $('.comment-btn').click(function(){
+      $('#randevudegerlendir-modal #randevu-id').attr('value',$(this).attr('name'));
+    });
+
+    $('.onay-btn').click(function(){
+      window.location.replace("/randevu/onayla/"+$(this).attr('name'));
+    });
+
+
+    $(".randevugor-btn").click(function(){
+      randevuID = $(this).attr('name');
+      $.ajax({
+        url: 'get/randevu/'+randevuID,
+        success: function(data) {
+          $('#randevugor-modal .modal-icerik').html(data.name);
+        }
+      });
     });
 
 });

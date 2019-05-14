@@ -53,10 +53,6 @@ stdnavOfYonetici = [
         'link':'profile'
     },
     {
-        'value':'Randevularım',
-        'link':'randevular'
-    },
-    {
         'value':'Öğrenci Ekle',
         'link':'ogrenciekle'
     },
@@ -164,13 +160,18 @@ def randevutalep():
         teacher=Classes.GetTeachers()
         return render_template('randevu_talep.html', navbar=session["navbar"],teachers=teacher)
 
-@app.route('/randevular')
+@app.route('/randevular', methods=['POST', 'GET'])
 @login_required
 def randevular():
+    Classes.CheckDateTime()
     form = request.form
     if form:
-        Classes.RandevuBitir(form.get('id'),'İptal - '+form.get('reason'))
-        flash('Randevu İptal Edildi!','error');
+        if form.get('reason'):
+            Classes.RandevuBitir(form.get('id'),'İptal - '+form.get('reason'))
+            flash('Randevu İptal Edildi!','error');
+        elif form.get('comment'):
+            Classes.RandevuBitir(form.get('id'),form.get('comment'))
+            flash('Randevu DEğerlendirildi!','success');
     user=Classes.GetUser(session["id"])
     gecmisrandevular=Classes.GetGecmisRandevu(session["id"],user.user_type)
     gelecekrandevular=Classes.GetGelecekRandevu(session["id"],user.user_type)
@@ -225,6 +226,7 @@ def ogrenciekle():
         tel=form.get('tel')
         adres=form.get('adres')
         Classes.OgrenciEkle(ad=name,soyad=surname,kullanici=username,sifre=password,adres=adres,email=email,number=tel)
+        flash('Öğrenci Başarıyla Eklendi!','success')
     return render_template('ogrenci_ekle.html', navbar=session["navbar"])
 
 @app.route('/randevu/sil/<id>')
@@ -232,6 +234,20 @@ def randevusil(id):
     Classes.DeleteRandevu(id)
     flash('Randevunuz İptal Edildi!', 'error')
     return redirect(url_for('randevular'))
+
+@app.route('/randevu/onayla/<id>')
+def randevuonay(id):
+    Classes.RandevuOnay(id)
+    flash('Randevuyu Onayladınız!', 'success')
+    return redirect(url_for('randevular'))
+
+@app.route('/get/randevu/<id>')
+def getrandevu(id):
+    randevu=Classes.GetRandevu(id)
+    _randevu = {
+        'name': randevu.RanDegerNotu,
+    }
+    return jsonify(_randevu)
 
 if __name__ == '__main__':
     app.run(debug=True)

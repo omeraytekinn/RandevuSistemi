@@ -264,6 +264,13 @@ def TalepOlustur(konu,teacher_id,student_id,teacherName,studentName,time):
    session.add(randevu)
    session.commit()
 
+def GetRandevu(id):
+   Session=sessionmaker(bind=engine)
+   session=Session()
+   randevu = session.query(GecmisRandevu).filter(GecmisRandevu.Gecmis_id == id).scalar()
+   session.expunge_all()
+   session.commit()
+   return randevu
 
 #RandevuBitir(1,"asdasda")
 #DeleteUser(3)

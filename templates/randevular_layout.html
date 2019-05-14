@@ -12,8 +12,8 @@
       {% elif user.user_type == 'Yonetici' %}
         <th scope="col">Öğretmen - Öğrenci</th>
       {% endif %}
-      <th scope="col">Randevu Konusu</th>
       <th scope="col">Randevu Tarihi</th>
+      <th scope="col">Randevu Konusu</th>
       <th scope="col">Durumu</th>
       <th scope="col">İşlemler</th>
     </tr>
@@ -27,8 +27,8 @@
       {% elif user.user_type == 'Teacher' %}
         <td>{{randevu.studentName}}</td>
       {% endif %}
-      <td>{{randevu.Topic}}</td>
       <td>{{randevu.Randevu_date}}</td>
+      <td>{{randevu.Topic}}</td>
       <td>
         <h5>
           <span class="badge badge-success">Aktif Randevu</span>
@@ -39,7 +39,7 @@
           {% if user.user_type == 'Student' %}
             <button type="button" class="btn btn-danger btn-sm iptal-tch-btn" name="{{ randevu.id }}">İptal Et</button>
           {% elif user.user_type == 'Teacher' %}
-            <button type="button" class="btn btn-danger btn-sm iptal-tch-btn" name="{{ randevu.id }}">İptal Et</button>
+            <button type="button" class="btn btn-danger btn-sm iptal-tch-btn" data-toggle="modal" data-target="#randevuiptal-modal" name="{{ randevu.id }}">İptal Et</button>
           {% endif %}
         </div>
       </td>
@@ -54,8 +54,8 @@
       {% elif user.user_type == 'Teacher' %}
         <td>{{randevu.studentName}}</td>
       {% endif %}
-      <td>{{randevu.Topic}}</td>
       <td>{{randevu.Randevu_date}}</td>
+      <td>{{randevu.Topic}}</td>
       <td>
         <h5>
           <span class="badge badge-primary">Onay Bekleniyor</span>
@@ -66,7 +66,8 @@
           {% if user.user_type == 'Student' %}
             <button type="button" class="btn btn-danger btn-sm iptal-std-btn" name="{{ randevu.id }}">İptal Et</button>
           {% elif user.user_type == 'Teacher' %}
-            <button type="button" class="btn btn-danger btn-sm iptal-tch-btn" name="{{ randevu.id }}">İptal Et</button>
+            <button type="button" class="btn btn-danger btn-sm iptal-tch-btn" data-toggle="modal" data-target="#randevual-modal" name="{{ randevu.id }}">İptal Et</button>
+            <button type="button" class="btn btn-primary btn-sm onay-btn" name="{{ randevu.id }}">Onayla</button>
           {% endif %}
         </div>
       </td>
@@ -74,11 +75,11 @@
     {% endfor %}
 
     {%for randevu in GelecekRandevu%}
-    {%if randevu.IsItPast%}
+    {%if randevu.IsItPast and user.user_type == 'Student' %}
     <tr>
       <td>{{randevu.teacherName}}</td>
-      <td>{{randevu.Topic}}</td>
       <td>{{randevu.Randevu_date}}</td>
+      <td>{{randevu.Topic}}</td>
       <td>
         <h5>
           <span class="badge badge-warning">Değerlendirilecek</span>
@@ -86,9 +87,7 @@
       </td>
       <td>
         <div class="btn-group">
-          {% if user.user_type == 'Student' %}
-            <button type="button" class="btn btn-danger btn-sm survey-btn" name="{{ randevu.id }}">Değerlendir</button>
-          {% endif %}
+            <button type="button" class="btn btn-success btn-sm comment-btn" data-toggle="modal" data-target="#randevudegerlendir-modal" name="{{ randevu.id }}">Değerlendir</button>
         </div>
       </td>
     </tr>
@@ -98,11 +97,17 @@
 
     {%for randevu in PastRandevu %}
     <tr>
-      <td>{{randevu.teacherName}}</td>
+      {% if user.user_type == 'Student' %}
+        <td>{{randevu.teacherName}}</td>
+      {% elif user.user_type == 'Teacher' %}
+        <td>{{randevu.studentName}}</td>
+      {% elif user.user_type == 'Yonetici' %}
+        <td>{{randevu.teacherName}} - {{randevu.teacherName}}</td>
+      {% endif %}
+      <td>{{randevu.Randevu_date}}</td>
       <td>
         <p>{{randevu.Topic}}</p>
       </td>
-      <td>{{randevu.Randevu_date}}</td>
       <td>
         <h5>
           <span class="badge badge-secondary">Geçmiş Randevu</span>
@@ -110,13 +115,15 @@
       </td>
       <td>
         <div class="btn-group">
+            <button type="button" class="btn btn-primary btn-sm randevugor-btn" data-toggle="modal" data-target="#randevugor-modal" name="{{ randevu.id }}">Görüntüle</button>
         </div>
       </td>
     </tr>
     {%endfor%}
   </tbody>
 </table>
-
 {% include 'includes/randevu_iptal_modal.html' %}
+{% include 'includes/randevu_goruntule_modal.html' %}
+{% include 'includes/randevu_degerlendir_modal.html' %}
 
 {% endblock %}
