@@ -25,7 +25,7 @@ $(document).ready(function () {
   });
 
 
-    $('#dtBasicExample').DataTable( {
+    $('#teacherTable').DataTable( {
           "order": [[ 3, "asc" ]],
           language: {
             "decimal":        "",
@@ -53,7 +53,7 @@ $(document).ready(function () {
           },
       columns:[
         	{
-            	"sortable": false
+            	"sortable": true
             },
             {
             	"sortable": true

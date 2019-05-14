@@ -8,6 +8,21 @@
   {{ form.soyad(class="form-control-plaintext col-9", value=user.surname, readonly="") }}
 </div>
 <div class="form-row">
+  {{ form.research.label(class="col-3 col-form-label text-left") }}
+  {% set f = form.adres.process_data(user.research) %}
+  {{ form.research(class="form-control-plaintext col-9", readonly="", style="resize: none" ) }}
+</div>
+<div class="form-row">
+  {{ form.schedule.label(class="col-3 col-form-label text-left") }}
+  {% set f = form.adres.process_data(user.schedule) %}
+  {{ form.schedule(class="form-control-plaintext col-9", readonly="", style="resize: none" ) }}
+</div>
+<div class="form-row">
+  {{ form.notes.label(class="col-3 col-form-label text-left") }}
+  {% set f = form.adres.process_data(user.notes) %}
+  {{ form.notes(class="form-control-plaintext col-9", readonly="", style="resize: none" ) }}
+</div>
+<div class="form-row">
   {{ form.email.label(class="col-3 col-form-label text-left") }}
   {{ form.email(class="form-control-plaintext col-9", value=user.email, readonly="") }}
 </div>

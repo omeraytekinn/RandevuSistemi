@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, url_for ,session, flash, request, jsonify
 from functools import wraps
-from form import LoginForm, OgrenciProfilForm
+from form import LoginForm, OgrenciProfilForm, OgretmenProfilForm, YoneticiProfilForm
 import Classes
 import datetime
 from enum import Enum
@@ -101,13 +101,14 @@ def login():
 @app.route('/profile', methods=['POST', 'GET'])
 @login_required
 def profile():
-    form = OgrenciProfilForm()
     user=Classes.GetUser(session['id'])
 
     if user.user_type == 'Student':
         navbar=stdnavOfStudent
+        form = OgrenciProfilForm()
     if user.user_type == 'Teacher':
         navbar=stdnavOfTeacher
+        form = OgretmenProfilForm()
 
     if form.validate_on_submit():
         ad=form.ad.data

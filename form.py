@@ -21,6 +21,9 @@ class OgretmenProfilForm(FlaskForm):
         ad = StringField('Ad:')
         soyad = StringField('Soyad:')
         email = StringField('Email:', validators=[Email()])
+        schedule = StringField('Haftalık Takvim:', widget=TextArea())
+        research = StringField('Araştırma Alanları:', widget=TextArea())
+        notes = StringField('Notlar:', widget=TextArea())
         telefon = TelField('Telefon No:')
         adres = StringField('Adres:', widget=TextArea())
 
