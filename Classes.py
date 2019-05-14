@@ -32,7 +32,7 @@ class Teacher(User):
    Tea_id = Column(Integer,ForeignKey('user.id',ondelete='CASCADE'),primary_key=True)
    note=Column(String(50))
    arastirma=Column(String(50))
-   DersProgramı=Column(String(50))
+   takvim=Column(String(50))
    __mapper_args__={'polymorphic_identity':'Teacher'}
 
 
@@ -148,6 +148,7 @@ def GetUser(id):
    Session = sessionmaker(bind=engine)
    session = Session()
    user=session.query(User).filter(User.id==id).scalar()
+   session.expunge_all()
    session.commit()
    return user
 
@@ -155,6 +156,7 @@ def GetTeacher(id):
   Session = sessionmaker(bind=engine)
   session = Session()
   teacher=session.query(Teacher).filter(Teacher.Tea_id==id).scalar()
+  session.expunge_all()
   session.commit()
   return teacher
 
@@ -229,6 +231,14 @@ def RandevuBitir(id,RandevuNotu):
    Session = sessionmaker(bind=engine)
    session = Session()
    session.add(GecRandevu)
+   session.commit()
+
+
+def TalepOlustur(konu,teacher_id,student_id,teacherName,studentName,time):
+   Session=sessionmaker(bind=engine)
+   session=Session()
+   randevu=TalepRandevu(Topic=konu,teacher_id=teacher_id,student_id=student_id,teacherName=teacherName,studentName=studentName,Randevu_date=time)
+   session.add(randevu)
    session.commit()
 
 
