@@ -1,7 +1,7 @@
-<table id="dtBasicExample" class="table hover">
+<table id="teacherTable" class="table hover">
   <thead class="thead-light">
     <tr>
-      <th scope="col">#</th>
+      <th scope="col sortable">#</th>
       <th scope="col sortable">Ad</th>
       <th scope="col">Soyad</th>
       <th scope="col">Email</th>
@@ -11,13 +11,13 @@
   <tbody>
     {%for teacher in teachers%}
     <tr>
-      <th scope="row">1</th>
+      <th scope="row">{{ loop.index }}</th>
       <td>{{teacher.name}}</td>
       <td>{{teacher.surname}}</td>
       <td>{{teacher.email}}</td>
       <td>
         <button type="button" class="btn btn-success btn-sm profile-btn" data-toggle="modal" data-target="#profile-modal" name="{{ teacher.id }}">Profili Görüntüle</button>
-        <button type="button" class="btn btn-primary btn-sm randevual-btn" data-toggle="modal" data-target="#randevual-modal" name="button">Randevu Al</button>
+        <button type="button" class="btn btn-primary btn-sm randevual-btn" data-toggle="modal" data-target="#randevual-modal" name="{{ teacher.id }}">Randevu Al</button>
       </td>
     </tr>
     {%endfor%}

@@ -30,6 +30,9 @@ class Student(User):
 class Teacher(User):
    __tablename__ = 'teacher'
    Tea_id = Column(Integer,ForeignKey('user.id',ondelete='CASCADE'),primary_key=True)
+   note=Column(String(50))
+   arastirma=Column(String(50))
+   takvim=Column(String(50))
    __mapper_args__={'polymorphic_identity':'Teacher'}
 
 
@@ -50,7 +53,7 @@ class Randevu(Base):
 
 class TalepRandevu(Randevu):
    __tablename__='taleprandevu'
-   Talep_id=Column(Integer,ForeignKey('randevu.id',ondelete='CASCADE'),primary_key=True)
+   Talep_id=Column(Integer,ForeignKey('randevu.id'),primary_key=True)
    TalepNotu = Column(String(256))
 
    __mapper_args__ ={'polymorphic_identity':"TalepRandevu"}
@@ -58,7 +61,7 @@ class TalepRandevu(Randevu):
 
 class GelecekRandevu(Randevu):
    __tablename__='gelecekrandevu'
-   Gelecek_id=Column(Integer,ForeignKey('randevu.id',ondelete='CASCADE'),primary_key=True)
+   Gelecek_id=Column(Integer,ForeignKey('randevu.id'),primary_key=True)
    OgretmenNotu = Column(String(256))#ogrencinin randevu talebine karşılık öğretmen tarafından cevap
    NoteOfStudent = Column(String(256))#ogrencinin talep notunun aynısı
    IsItPast = Column(Boolean,default=False)
@@ -66,7 +69,7 @@ class GelecekRandevu(Randevu):
 
 class GecmisRandevu(Randevu):
    __tablename__='gecmisrandevu'
-   Gecmis_id=Column(Integer,ForeignKey('randevu.id',ondelete='CASCADE'),primary_key=True)
+   Gecmis_id=Column(Integer,ForeignKey('randevu.id'),primary_key=True)
    RanDegerNotu = Column(String(256))#Randevu Sonrası Öğretmen tarafından Oluşturulan Değerlendirme Yazısı
    __mapper_args__ ={'polymorphic_identity':"GecmisRandevu"}
 
@@ -77,10 +80,10 @@ def OgrenciEkle(ad,soyad,kullanici,sifre,adres,email,number):
    session.add(stu)
    session.commit()
 
-def OgretmenEkle(ad,soyad,kullanici,sifre,adres,email,number):
+def OgretmenEkle(ad,soyad,kullanici,sifre,adres,email,number,note):
    Session = sessionmaker(bind=engine)
    session = Session()
-   tea=Teacher(username=kullanici,password=sifre,name=ad,surname=soyad,adres=adres,email=email,number=number)
+   tea=Teacher(username=kullanici,password=sifre,name=ad,surname=soyad,adres=adres,email=email,number=number,note=note)
    session.add(tea)
    session.commit()
 
@@ -141,10 +144,25 @@ def UpdateUser(id,user2):
    user.adres=user2.adres
    session.commit()
 
+def UpdateTeacher(id,teacher2):
+   Session = sessionmaker(bind=engine)
+   session = Session()
+   teacher=session.query(Teacher).filter(Teacher.Tea_id==id).scalar()
+   teacher.name=teacher2.name
+   teacher.surname=teacher2.surname
+   teacher.email=teacher2.email
+   teacher.number=teacher2.number
+   teacher.adres=teacher2.adres
+   teacher.note=teacher2.note2
+   teacher.takvim=teacher2.takvim
+   teacher.arastirma=teacher2.arastirma
+   session.commit()
+
 def GetUser(id):
    Session = sessionmaker(bind=engine)
    session = Session()
    user=session.query(User).filter(User.id==id).scalar()
+   session.expunge_all()
    session.commit()
    return user
 
@@ -152,6 +170,7 @@ def GetTeacher(id):
   Session = sessionmaker(bind=engine)
   session = Session()
   teacher=session.query(Teacher).filter(Teacher.Tea_id==id).scalar()
+  session.expunge_all()
   session.commit()
   return teacher
 
@@ -159,6 +178,7 @@ def GetTeachers():
    Session = sessionmaker(bind=engine)
    session = Session()
    teachers=session.query(Teacher).all()
+   session.expunge_all()
    session.commit()
    return teachers
 
@@ -228,6 +248,14 @@ def RandevuBitir(id,RandevuNotu):
    session.commit()
 
 
+def TalepOlustur(konu,teacher_id,student_id,teacherName,studentName,time):
+   Session=sessionmaker(bind=engine)
+   session=Session()
+   randevu=TalepRandevu(Topic=konu,teacher_id=teacher_id,student_id=student_id,teacherName=teacherName,studentName=studentName,Randevu_date=time)
+   session.add(randevu)
+   session.commit()
+
+
 #RandevuBitir(1,"asdasda")
 #DeleteUser(3)
 #DeleteRandevu(1)
@@ -238,7 +266,7 @@ def RandevuBitir(id,RandevuNotu):
 #OgrenciEkle('alperen','aksu','alperen','1234','mefkure sok.','aksulperen@gmail.com','535532123')
 #OgrenciEkle('ömer','aytekin','ömer','1234','mefkure sok.','aksulperen@gmail.com','535532123')
 #OgrenciEkle('ufuk','yılmaz','ufuk','1234','mefkure sok.','aksulperen@gmail.com','535532123')
-#OgretmenEkle('cihan','taysi','cihan','1234','mefkure sok.','aksulperen@gmail.com','535532123')
+#OgretmenEkle('zeynep','akca','zeynep','1234','mefkure sok.','aksulperen@gmail.com','535532123',"asdasdasder")
 #OgretmenEkle('amac','güven','amac','1234','mefkure sok.','aksulperen@gmail.com','535532123')
 #OgretmenEkle('göksel','biricil','göksel','1234','mefkure sok.','aksulperen@gmail.com','535532123')
 #Session = sessionmaker(bind=engine)
@@ -252,7 +280,7 @@ def RandevuBitir(id,RandevuNotu):
 #time=datetime.datetime(2018,11,2)
 #rand=TalepRandevu(Topic='konu',teacher_id=5,student_id=1,teacherName='amac',studentName='alperen',Randevu_date=time)
 #rand2=GelecekRandevu(Topic='konu2',teacher_id=4,student_id=1,teacherName='cihan',studentName='alperen',Randevu_date=time)
-#rand3=GecmisRandevu(Topic='konu322',teacher_id=4,student_id=1,teacherName='cihan',studentName='alperen',Randevu_date=time)
+#rand3=GecmisRandevu(Topic='konu3',teacher_id=4,student_id=1,teacherName='cihan',studentName='alperen',Randevu_date=time)
 #Session = sessionmaker(bind=engine)
 #session = Session()
 #session.add(rand)

@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, url_for ,session, flash, request, jsonify
 from functools import wraps
-from form import LoginForm, OgrenciProfilForm
+from form import LoginForm, OgrenciProfilForm, OgretmenProfilForm, YoneticiProfilForm
 import Classes
 import datetime
 from enum import Enum
@@ -101,13 +101,15 @@ def login():
 @app.route('/profile', methods=['POST', 'GET'])
 @login_required
 def profile():
-    form = OgrenciProfilForm()
     user=Classes.GetUser(session['id'])
 
     if user.user_type == 'Student':
         navbar=stdnavOfStudent
+        form = OgrenciProfilForm()
     if user.user_type == 'Teacher':
         navbar=stdnavOfTeacher
+        user=Classes.GetTeacher(session['id'])
+        form = OgretmenProfilForm()
 
     if form.validate_on_submit():
         ad=form.ad.data
@@ -115,21 +117,39 @@ def profile():
         email=form.email.data
         telefon=form.telefon.data
         adres=form.adres.data
-        user=Classes.User(name=ad,surname=soyad,email=email,adres=adres,number=telefon)
-        Classes.UpdateUser(session['id'],user)
+        if user.user_type =='Student':
+            user=Classes.User(name=ad,surname=soyad,email=email,adres=adres,number=telefon)
+            Classes.UpdateUser(session['id'],user)
+        else:
+            note=form.notes.data
+            arastirma=form.research.data
+            takvim=form.schedule.data
+            teacher=Classes.Teacher(name=ad,surname=soyad,email=email,adres=adres,number=telefon,note=note,arastirma=arastirma,takvim=takvim)
+            Classes.UpdateTeacher(session['id'],teacher)
         return redirect(url_for('profile'))
     ### Burada auth ile kullanıcı tipi gönderiliyor
     ### Burada auth, loginde yapılan giriş türüne göre
     ### ogrenci, ogretmen, yonetici değerlerini alabilir
     return render_template('profil_layout.html', navbar=navbar, form=form, auth=user.user_type,user=user)
 
-@app.route('/randevutalep')
+@app.route('/randevutalep', methods=['POST', 'GET'])
 @login_required
 def randevutalep():
+        form = request.form
+        if form:
+            hour = form.get('hour')
+            minute = form.get('minute')
+            date = form.get('date')
+            date=date.split("-")
+            konu=form.get('topic')
+            dateformat=datetime.datetime(int(date[2]),int(date[1]),int(date[0]),int(hour),int(minute))
+            teacher_id = form.get('id')
+            teacher=Classes.GetTeacher(teacher_id)
+            ogrenci=Classes.GetUser(session["id"])
+            Classes.TalepOlustur(konu,teacher_id,session["id"],teacher.name,ogrenci.name,dateformat)
+            flash('Randevu Başarıyla Kaydedildi!', 'success')
         teacher=Classes.GetTeachers()
         return render_template('randevu_talep.html', navbar=stdnavOfStudent,teachers=teacher)
-
-
 
 @app.route('/randevular')
 @login_required
@@ -152,17 +172,20 @@ def show_profile(id):
         'name': teacher.name,
         'surname': teacher.surname,
         'email': teacher.email,
-        'tel' : teacher.number
+        'tel' : teacher.number,
+        'research': teacher.arastirma,
+        'schedule': teacher.takvim,
+        'notes': teacher.note
     }
     return jsonify(_teacher)
-
-@app.route('/ogrenciekle')
-def ogrenciekle():
-    return render_template('ogrenci_ekle.html', navbar=stdnavOfStudent)
 
 @app.route('/ogretmenekle')
 def ogretmenekle():
     return render_template('ogretmen_ekle.html', navbar=stdnavOfStudent)
+
+@app.route('/ogrenciekle')
+def ogrenciekle():
+    return render_template('ogrenci_ekle.html', navbar=stdnavOfStudent)
 
 if __name__ == '__main__':
     app.run(debug=True)
