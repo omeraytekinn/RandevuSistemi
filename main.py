@@ -1,7 +1,11 @@
-from flask import Flask, render_template, redirect, url_for ,session, flash
+from flask import Flask, render_template, redirect, url_for ,session, flash, request, jsonify
 from functools import wraps
 from form import LoginForm, OgrenciProfilForm
 import Classes
+import datetime
+from enum import Enum
+
+
 
 app = Flask(__name__)
 
@@ -42,6 +46,7 @@ stdnavOfTeacher = [
         'alt':True #dropdown link
     }
 ]
+
 
 
 def login_required(f):
@@ -97,7 +102,6 @@ def profile():
     ### Burada auth ile kullanıcı tipi gönderiliyor
     ### Burada auth, loginde yapılan giriş türüne göre
     ### ogrenci, ogretmen, yonetici değerlerini alabilir
-    ### ona göre yaparsınız artık bunu
     return render_template('profil_layout.html', navbar=navbar, form=form, auth=user.user_type,user=user)
 
 @app.route('/randevutalep')
@@ -107,10 +111,14 @@ def randevutalep():
         return render_template('randevu_talep.html', navbar=stdnavOfStudent,teachers=teacher)
 
 
+
 @app.route('/randevular')
 @login_required
 def randevular():
-    return render_template('randevular.html', navbar=stdnavOfStudent)
+    gecmisrandevular=Classes.GetGecmisRandevu(session["id"])
+    gelecekrandevular=Classes.GetGelecekRandevu(session["id"])
+    taleprandevular=Classes.GetTalepRandevu(session["id"])
+    return render_template('randevular_layout.html', navbar=stdnavOfStudent,PastRandevu=gecmisrandevular,GelecekRandevu=gelecekrandevular,TalepRandevu=taleprandevular)
 
 @app.route('/logout')
 def logout():
@@ -118,6 +126,16 @@ def logout():
         flash('Çıkış Başarılı', 'success')
         return redirect('/')
 
+@app.route('/get/profile/<id>')
+def show_profile(id):
+    teacher=Classes.GetTeacher(id)
+    _teacher = {
+        'name': teacher.name,
+        'surname': teacher.surname,
+        'email': teacher.email,
+        'tel' : teacher.number
+    }
+    return jsonify(_teacher)
 
 
 if __name__ == '__main__':

@@ -15,7 +15,7 @@ $(document).ready(function () {
     $('form .form-row input, form textarea').addClass('form-control-plaintext');
     $('form .form-row input, form textarea').removeClass('form-control');
   });
-  
+
   $('#notifyModal').modal({show:true, backdrop: false});
   setTimeout(function() {
     $('#notifyModal').modal('hide');
@@ -69,4 +69,19 @@ $(document).ready(function () {
             }
         ]
     });
+
+    var profilid;
+    $(".profil-btn").click(function(){
+      profilid = $(this).attr("name");
+      $.ajax({
+        url: 'get/profile/'+profilid,
+        success: function(data) {
+          $('#profile-modal .modal-icerik').eq(0).html(data.name);
+          $('#profile-modal .modal-icerik').eq(1).html(data.surname);
+          $('#profile-modal .modal-icerik').eq(2).html(data.tel);
+          $('#profile-modal .modal-icerik').eq(3).html(data.email);
+        }
+      });
+    });
+
 });

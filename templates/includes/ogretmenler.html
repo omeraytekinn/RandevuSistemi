@@ -16,8 +16,8 @@
       <td>{{teacher.surname}}</td>
       <td>{{teacher.email}}</td>
       <td>
-        <button type="button" class="btn btn-success btn-sm" name="button">Profili Görüntüle</button>
-        <button type="button" class="btn btn-primary btn-sm" name="button">Randevu Al</button>
+        <button type="button" class="btn btn-success btn-sm profil-btn" data-toggle="modal" data-target="#profile-modal" name="{{ teacher.id }}">Profili Görüntüle</button>
+        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#profile-modal" name="button">Randevu Al</button>
       </td>
     </tr>
     {%endfor%}

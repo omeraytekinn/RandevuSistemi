@@ -1,0 +1,98 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<h1>Randevular buraya gelecek</h1>
+<div id="contenthere">asd</div>
+<table id="dtBasicExample" class="table hover display">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">Öğretmen Adı</th>
+      <th scope="col">Randevu Konusu</th>
+      <th scope="col">Randevu Tarihi</th>
+      <th scope="col">Durumu</th>
+      <th scope="col">İşlemler</th>
+    </tr>
+  </thead>
+  <tbody>
+    {%for randevu in GelecekRandevu%}
+    {%if  not randevu.IsItPast%}
+    <tr>
+      <td>{{randevu.teacherName}}</td>
+      <td>{{randevu.Topic}}</td>
+      <td>{{randevu.Randevu_date}}</td>
+      <td>
+        <h5>
+          <span class="badge badge-success">Aktif Randevu</span>
+        </h5>
+      </td>
+      <td>
+        <div class="btn-group">
+            <button type="button" class="btn btn-danger btn-sm" name="button">İptal Et</button>
+        </div>
+      </td>
+    </tr>
+    {%endif%}
+    {%endfor%}
+
+    {%for randevu in TalepRandevu%}
+    <tr>
+      <td>{{randevu.teacherName}}</td>
+      <td>{{randevu.Topic}}</td>
+      <td>{{randevu.Randevu_date}}</td>
+      <td>
+        <h5>
+          <span class="badge badge-primary">Onay Bekleniyor</span>
+        </h5>
+      </td>
+      <td>
+        <div class="btn-group">
+            <button type="button" class="btn btn-danger btn-sm" name="button">İptal Et</button>
+        </div>
+      </td>
+    </tr>
+    {%endfor%}
+    
+    {%for randevu in GelecekRandevu%}
+    {%if randevu.IsItPast%}
+    <tr>
+      <td>{{randevu.teacherName}}</td>
+      <td>{{randevu.Topic}}</td>
+      <td>{{randevu.Randevu_date}}</td>
+      <td>
+        <h5>
+          <span class="badge badge-warning">Değerlendirilecek</span>
+        </h5>
+      </td>
+      <td>
+        <div class="btn-group">
+            <button type="button" class="btn btn-primary btn-sm classloader" name="button">Değerlendir</button>
+        </div>
+      </td>
+    </tr>
+    {%else%}
+    {%endif%}
+    {%endfor%}
+    
+    {%for randevu in PastRandevu %}
+    <tr>
+      <td>{{randevu.teacherName}}</td>
+      <td>
+        <p>{{randevu.Topic}}</p>
+      </td>
+      <td>{{randevu.Randevu_date}}</td>
+      <td>
+        <h5>
+          <span class="badge badge-secondary">Geçmiş Randevu</span>
+        </h5>
+      </td>
+      <td>
+        <div class="btn-group">
+        </div>
+      </td>
+    </tr>
+    {%endfor%}
+  </tbody>
+</table>
+
+{% endblock %}
